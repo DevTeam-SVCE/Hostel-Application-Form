@@ -90,13 +90,14 @@ function SectionHeader({ icon, title }) {
 }
 
 // ── Reusable field wrapper ─────────────────────────────────────
-function Field({ label, required, children, half }) {
+function Field({ label, required, children, half, error }) {
   return (
     <div className={`haf-field${half ? ' haf-field--half' : ''}`}>
       <label className="haf-label">
         {label}{required && <span className="haf-required" aria-hidden="true"> *</span>}
       </label>
       {children}
+      {error && <p className="haf-error" role="alert">⚠ {error}</p>}
     </div>
   );
 }
@@ -137,6 +138,9 @@ export default function HostelApplicationForm({ onSubmit }) {
   // ── Validation ────────────────────────────────────────────────
   function validate(f) {
     const e = {};
+    // Student Details
+    if (!f.photo)
+      e.photo = 'Passport photograph is required.';
     if (!f.studentName.trim())
       e.studentName = 'Student name is required.';
     if (!f.studentPhone.trim())
@@ -149,16 +153,32 @@ export default function HostelApplicationForm({ onSubmit }) {
       e.studentEmail = 'Enter a valid email address.';
     if (!f.gender)
       e.gender = 'Gender is required.';
+    // Academic Details
     if (!f.course)
       e.course = 'Course is required.';
     if (!f.year)
       e.year = 'Year is required.';
     if (!f.branch)
       e.branch = 'Branch is required.';
-    if (!f.usn.trim())
-      e.usn = 'University Seat Number is required.';
+    // Guardian / Father / Mother Details
     if (!f.parentName.trim())
-      e.parentName = 'Parent / Mother name is required.';
+      e.parentName = 'Guardian / Parent name is required.';
+    if (!f.parentPhone.trim())
+      e.parentPhone = 'Guardian / Parent phone number is required.';
+    else if (!/^\d{10}$/.test(f.parentPhone.trim()))
+      e.parentPhone = 'Enter a valid 10-digit phone number.';
+    // Local Guardian Details
+    if (!f.guardianName.trim())
+      e.guardianName = 'Guardian name is required.';
+    if (!f.guardianOccupation)
+      e.guardianOccupation = 'Guardian occupation is required.';
+    if (!f.guardianPhone.trim())
+      e.guardianPhone = 'Guardian phone number is required.';
+    else if (!/^\d{10}$/.test(f.guardianPhone.trim()))
+      e.guardianPhone = 'Enter a valid 10-digit phone number.';
+    if (!f.guardianAddress.trim())
+      e.guardianAddress = 'Guardian address is required.';
+    // Hostel Details
     if (!f.hostelBlock)
       e.hostelBlock = 'Hostel block is required.';
     if (!f.foodPreference)
@@ -184,7 +204,10 @@ export default function HostelApplicationForm({ onSubmit }) {
     });
   };
 
-  const setPhoto = (val) => setForm((prev) => ({ ...prev, photo: val }));
+  const setPhoto = (val) => {
+    setForm((prev) => ({ ...prev, photo: val }));
+    setErrors((prev) => { const next = { ...prev }; delete next.photo; return next; });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -277,7 +300,11 @@ export default function HostelApplicationForm({ onSubmit }) {
                 <div className="haf-student-grid">
                   {/* Left: passport photo */}
                   <div className="haf-photo-col">
+                    <label className="haf-label">
+                      Passport Photograph<span className="haf-required" aria-hidden="true"> *</span>
+                    </label>
                     <PhotoUpload value={form.photo} onChange={setPhoto} />
+                    {errors.photo && <p className="haf-error" role="alert">⚠ {errors.photo}</p>}
                   </div>
 
                   {/* Right: student fields */}
@@ -418,16 +445,16 @@ export default function HostelApplicationForm({ onSubmit }) {
                       ))}
                     </select>
                   </Field>
-                  <Field label="University Seat Number" required error={errors.usn}>
+                  <Field label="University Seat Number">
                     <input
-                      data-field="usn"
-                      className={`haf-input${errors.usn ? ' haf-input--error' : ''}`}
+                      className="haf-input"
                       type="text"
                       placeholder="e.g. 1SI22CS001"
                       value={form.usn}
                       onChange={set('usn')}
                     />
                   </Field>
+
                 </div>
               </div>
             </section>
@@ -460,9 +487,10 @@ export default function HostelApplicationForm({ onSubmit }) {
                 </div>
 
                 <div className="haf-row">
-                  <Field label="Phone Number">
+                  <Field label="Phone Number" required error={errors.parentPhone}>
                     <input
-                      className="haf-input"
+                      data-field="parentPhone"
+                      className={`haf-input${errors.parentPhone ? ' haf-input--error' : ''}`}
                       type="tel"
                       placeholder="10-digit number"
                       value={form.parentPhone}
@@ -493,17 +521,23 @@ export default function HostelApplicationForm({ onSubmit }) {
               <SectionHeader icon="🏠" title="Local Guardian Details" />
               <div className="haf-section-body">
                 <div className="haf-row">
-                  <Field label="Guardian Name">
+                  <Field label="Guardian Name" required error={errors.guardianName}>
                     <input
-                      className="haf-input"
+                      data-field="guardianName"
+                      className={`haf-input${errors.guardianName ? ' haf-input--error' : ''}`}
                       type="text"
                       placeholder="Enter name"
                       value={form.guardianName}
                       onChange={set('guardianName')}
                     />
                   </Field>
-                  <Field label="Guardian Occupation">
-                    <select className="haf-select" value={form.guardianOccupation} onChange={set('guardianOccupation')}>
+                  <Field label="Guardian Occupation" required error={errors.guardianOccupation}>
+                    <select
+                      data-field="guardianOccupation"
+                      className={`haf-select${errors.guardianOccupation ? ' haf-select--error' : ''}`}
+                      value={form.guardianOccupation}
+                      onChange={set('guardianOccupation')}
+                    >
                       <option value="">Select occupation</option>
                       {OCCUPATION_OPTIONS.map((o) => (
                         <option key={o} value={o}>{o}</option>
@@ -513,9 +547,10 @@ export default function HostelApplicationForm({ onSubmit }) {
                 </div>
 
                 <div className="haf-row">
-                  <Field label="Guardian Phone">
+                  <Field label="Guardian Phone" required error={errors.guardianPhone}>
                     <input
-                      className="haf-input"
+                      data-field="guardianPhone"
+                      className={`haf-input${errors.guardianPhone ? ' haf-input--error' : ''}`}
                       type="tel"
                       placeholder="10-digit number"
                       value={form.guardianPhone}
@@ -526,9 +561,10 @@ export default function HostelApplicationForm({ onSubmit }) {
                 </div>
 
                 <div className="haf-row haf-row--full">
-                  <Field label="Guardian Address">
+                  <Field label="Guardian Address" required error={errors.guardianAddress}>
                     <textarea
-                      className="haf-textarea"
+                      data-field="guardianAddress"
+                      className={`haf-textarea${errors.guardianAddress ? ' haf-input--error' : ''}`}
                       placeholder="Enter full address"
                       value={form.guardianAddress}
                       onChange={set('guardianAddress')}
