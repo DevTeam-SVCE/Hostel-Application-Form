@@ -526,3 +526,21 @@
   font-size: 11px;
   flex-shrink: 0;
 }
+
+/* ── Parent details boxes ── */
+.haf-parent-box {
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px 10px;
+  margin-bottom: 12px;
+  background: #f8fafc;
+}
+
+.haf-parent-box-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e3a5f;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}

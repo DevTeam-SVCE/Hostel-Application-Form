@@ -101,11 +101,12 @@ const styles = {
     signatureTable: { width: "100%", borderCollapse: "collapse" },
     signatureTd: {
       border: "1px solid #000",
-      height: "40px",
+      height: "48px",
+      width: "33.33%",
       verticalAlign: "bottom",
       textAlign: "center",
       fontSize: "11px",
-      paddingBottom: "5px",
+      paddingBottom: "6px",
     },
     rulesPage: { padding: "12mm" },
     formCodeTop: {
@@ -208,6 +209,14 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
     parentOccupation= "",
     parentPhone     = "",
     parentAddress   = "",
+    // Father details — falls back to parentName/occupation/phone if not provided
+    fatherName      = parentName,
+    fatherOccupation= parentOccupation,
+    fatherPhone     = parentPhone,
+    // Mother details
+    motherName      = "",
+    motherOccupation= "",
+    motherPhone     = "",
     guardianName    = "",
     guardianOccupation = "",
     guardianPhone   = "",
@@ -254,11 +263,8 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
           </div>
         </div>
       
-        <div style={styles.formCode}>HOS01</div>
-
-        <div style={styles.applicationInfo}>
+<div style={styles.applicationInfo}>
           <div><strong>ACADEMIC YEAR:</strong> {academicYear}</div>
-          <div><strong>APPLICATION NO:</strong> {applicationNo}</div>
         </div>
 
         <div style={styles.sectionTitle}>STUDENT DETAILS</div>
@@ -311,18 +317,75 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
             <Row label="Course"                 value={course}      />
             <Row label="Year"                   value={year}        />
             <Row label="Branch"                 value={branch}      />
-            <Row label="University Seat Number" value={universityNo}/>
+            <Row label="USN / Contineo Number"   value={universityNo}/>
           </tbody>
         </table>
 
-        <div style={styles.sectionTitle}>PARENT / MOTHER DETAILS</div>
+        <div style={styles.sectionTitle}>PARENT DETAILS</div>
 
+        {/* Father + Mother side-by-side boxes */}
+        <div style={{ display: "flex", gap: "0", border: "1px solid #000", borderBottom: "none" }}>
+          {/* Father Details */}
+          <div style={{ flex: 1, borderRight: "1px solid #000" }}>
+            <div style={{
+              background: "#f5f5f5",
+              borderBottom: "1px solid #000",
+              padding: "3px 7px",
+              fontWeight: "bold",
+              fontSize: "11.5px",
+            }}>Father Details</div>
+            <table style={{ ...styles.formTable, borderTop: "none" }}>
+              <tbody>
+                <tr>
+                  <td style={{ ...styles.label, width: "40%", borderLeft: "none", borderTop: "none" }}>Father's Name</td>
+                  <td style={{ ...styles.valueCell, borderRight: "none", borderTop: "none" }}>{fatherName}</td>
+                </tr>
+                <tr>
+                  <td style={{ ...styles.label, width: "40%", borderLeft: "none" }}>Occupation</td>
+                  <td style={{ ...styles.valueCell, borderRight: "none" }}>{fatherOccupation}</td>
+                </tr>
+                <tr>
+                  <td style={{ ...styles.label, width: "40%", borderLeft: "none", borderBottom: "none" }}>Phone Number</td>
+                  <td style={{ ...styles.valueCell, borderRight: "none", borderBottom: "none" }}>{fatherPhone}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          {/* Mother Details */}
+          <div style={{ flex: 1 }}>
+            <div style={{
+              background: "#f5f5f5",
+              borderBottom: "1px solid #000",
+              padding: "3px 7px",
+              fontWeight: "bold",
+              fontSize: "11.5px",
+            }}>Mother Details</div>
+            <table style={{ ...styles.formTable, borderTop: "none" }}>
+              <tbody>
+                <tr>
+                  <td style={{ ...styles.label, width: "40%", borderLeft: "none", borderTop: "none" }}>Mother's Name</td>
+                  <td style={{ ...styles.valueCell, borderRight: "none", borderTop: "none" }}>{motherName}</td>
+                </tr>
+                <tr>
+                  <td style={{ ...styles.label, width: "40%", borderLeft: "none" }}>Occupation</td>
+                  <td style={{ ...styles.valueCell, borderRight: "none" }}>{motherOccupation}</td>
+                </tr>
+                <tr>
+                  <td style={{ ...styles.label, width: "40%", borderLeft: "none", borderBottom: "none" }}>Phone Number</td>
+                  <td style={{ ...styles.valueCell, borderRight: "none", borderBottom: "none" }}>{motherPhone}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Address — full width, more space */}
         <table style={styles.formTable}>
           <tbody>
-            <Row label="Parent / Mother Name" value={parentName}       />
-            <Row label="Occupation"           value={parentOccupation} />
-            <Row label="Phone Number"         value={parentPhone}      />
-            <Row label="Address"              value={parentAddress}    />
+            <tr>
+              <td style={{ ...styles.label, width: "27%", verticalAlign: "top", paddingTop: "5px" }}>Address</td>
+              <td style={{ ...styles.valueCell, height: "60px", verticalAlign: "top" }}>{parentAddress}</td>
+            </tr>
           </tbody>
         </table>
 
@@ -353,7 +416,7 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
               <tr>
                 <td style={styles.signatureTd}>Student Signature</td>
                 <td style={styles.signatureTd}>Warden Signature</td>
-                <td style={styles.signatureTd}>Principal Signature</td>
+                <td style={styles.signatureTd}>Parent Signature</td>
               </tr>
             </tbody>
           </table>
@@ -362,7 +425,6 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
 
       {/* ── PAGE 2 – Rules & Regulations (part 1) ── */}
       <div style={{ ...styles.a4Page, ...styles.rulesPage }} className="print-page-break haf-print-page">
-        <div style={styles.formCodeTop}>HOS01</div>
 
         <div style={styles.rulesTitle}>Rules and Regulations of Hostel</div>
 
@@ -373,9 +435,10 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
             "Hostel accommodation is provided with the Condition that the resident student will strictly abide by the Hostel Rules currently in force or as may be enforced from time to time.",
             "Accommodation in the Hostel cannot be claimed as a matter of right.",
             "The Institute Administration may refuse accommodation to any student who is known to have grossly violated the Hostel Rules or whose presence is likely to disturb the peace and tranquility of hostel.",
-            "Violation of hostel rules will make the student liable to disciplinary action including permanent expulsion from the hostel/Institute.",
+            "Violation of hostel rules will make the student liable to disciplinary action including permanent expulsion from the hostel/Institute ,such students fees will be forefitted or not be refunded.",
             "Students must remember that hostel is the home of the student on the campus and therefore, he/she should behave on the campus as well as outside in such a manner as to bring credit to him/her and to the Institution.",
-            "A student once admitted in the hostel, will continue to be a hostel inmate throughout the year unless otherwise debarred from the hostel on disciplinary grounds and he/she will have to pay the room rent for both the terms. Every student must be acquainted with all the rules and regulations of the Hostel. He / She must observe them strictly. Ignorance of rules will not be considered as an excuse.",
+            "A student once admitted in the hostel, will continue to be a hostel inmate throughout the academic year unless otherwise debarred from the hostel on disciplinary grounds and he/she will have to pay the room rent for one academic year. Every student must be acquainted with all the rules and regulations of the Hostel. He / She must observe them strictly. Ignorance of rules will not be considered as an excuse.",
+            "The amount paid for academic year will not be refunded in case if the student willing to vacate in between the academic year.",
           ].map((text, i) => (
             <li key={i} style={styles.rulesLi}>{text}</li>
           ))}
@@ -385,20 +448,21 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
 
         <ol style={styles.rulesList}>
           {[
+            <strong>"Ragging in any form is a cognizable offence and severely punishable as per the Supreme Court directives leading to expulsion from the Hostel and the disciplinary action may culminate in his/her expulsion from the Institute as well. The Institute administration may report incidents of ragging to the Police for taking appropriate action under the law."</strong>,
             "Every student should stay in the room allotted to him/her. Mutual exchange of rooms after final allotment is not allowed. However, only the Chief Warden may allow as a special case on valid and reasonable ground. Violation of this rule will be considered an act of gross misconduct and attract appropriate disciplinary action against them including expulsion from Hostel/Institute and imposition of heavy fine.",
             "Resident Students must look up the Hostel Notice Board regularly. The Warden Team member or any authorized member of the Institute staff can inspect the room of any student in the hostel at any time. Hostel inmates are supposed to keep ID-cards with them and must produce the same to any Hostel or Institute's authority whenever asked for.",
-            "No Resident Students should meet the Chairman/CED for ordinary matters. Warden In-charge of the concerned hostel is the right person for such matters. In next step they can approach to the Chief Warden.",
-            "All cases of illness should be reported to the concerned Warden In-charge/Warden Immediately.",
-            "No student should keep any fire-arms, lethal weapons, poisonous things or intoxicants of any kind in the Hostel. Students must not take law into their own hands, but must report all disputes to the hostel Warden In-charge/Warden. All kinds of shouting, fighting, gambling, stealing, violent knocking, maltreating or abusing are strictly prohibited. In such cases offender will be handed over to Police immediately.",
-            "The boarder shall have to vacate/Shift their accommodation as and when asked for to the identified place of accommodation by the Management. They should vacate the hostel rooms before they leave for the vacation so that annual maintenance is carried out. All the hostel articles issued to the students are returned to the caretaker before the students leave their rooms. They will be responsible for any loss/Damage caused to Hostel/College properties.",
+            "All cases of illness should be reported by himself/herself and also by roomates to the concerned Warden In-charge/Warden Immediately.",
+            "No student should keep any fire-arms, lethal weapons, poisonous things or intoxicants of any kind in the Hostel. Students must not take law into their own hands, but must report all disputes to the hostel Warden In-charge/Warden. All kinds of shouting, fighting, gambling, stealing, violent knocking, maltreating or abusing are strictly prohibited.",
+            "The boarder shall have to vacate/Shift their accommodation as and when asked for to the identified place of accommodation by the Management. They should vacate the hostel rooms by shifting their belongings to a clock room identified before they leave for the vacation so that annual maintenance is carried out. All the hostel articles issued to the students are returned to the caretaker before the students leave their rooms. They will be responsible for any loss/Damage caused to Hostel/College properties.",
             "No boarder is allowed to engage a private servant or pet animals.",
             "Students shall not remain absent from their hostels during night without the prior permission of the Warden In-charge/Warden.",
-            "Hostel students shall not leave the campus without prior permission of the Warden In-charge/Warden.",
-            "They shall have to apply in prescribed form in advance stating the reason for leaving and the address of destination. Hostel student who leave hostel without the permission from the concerned Warden shall be deemed to be missing and Parent/Guardian/Police authorities may be intimated in consultation with the Management.",
+            "Hostel students shall not leave the campus without prior permission of the Warden In-charge/Warden with consent from the parent. ",
+            "They shall have to apply in prescribed form ms team's in advance stating the reason for leaving and the address of destination. Hostel student who leave hostel without the permission from the concerned Warden shall be deemed to be missing and Parent/Guardian/Police authorities may be intimated in consultation with the Management.",
             "The inmates of the hostel will not leave the hostel premises on holidays for the purpose of excursion or picnic or Project work. Prior permission of the Warden In-charge/Warden has to be obtained for going for any picnic or excursion. However for any eventuality that may occur during picnic/excursion, the responsibility does not lie with the Institute authorities.",
-            "Hostel inmates are supposed to take care of their health themselves. Student suffering from infectious disease has to leave for medical treatment to proper clinic/hospital or isolated place under intimation to the warden.",
+            "Hostel inmates are supposed to take care of their health themselves. Student suffering from infectious disease has to leave for medical treatment to proper clinic/hospital or isolated place under intimation to the warden through parent consent.",
             "Formation of association of students on the basis of regions, caste or creed is not permitted, during their stay in the hostels.",
-            "Room furniture and electric fittings are required to be maintained by the inmates in good condition. At the time of allotment of room and leaving the hostel for the summer vacation, every student must take-over and hand-over, respectively, the hostel property carefully. Students should invariably vacate the hostel during vacation.",
+            "Room furniture and electric fittings are required to be maintained by the inmates in good condition, any damage will lead to penalty.",
+            "During vacating the room after academic year complition the boarder should not lock the room and cupboards which may lead to penalty.",
           ].map((text, i) => (
             <li key={i} style={styles.rulesLi}>{text}</li>
           ))}
@@ -407,28 +471,32 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
 
       {/* ── PAGE 3 – Rules & Regulations (part 2) ── */}
       <div style={{ ...styles.a4Page, ...styles.rulesPage }} className="print-page-break haf-print-page">
-        <div style={styles.formCodeTop}>HOS01</div>
 
-        <ol style={styles.rulesList} start={15}>
+        <ol style={styles.rulesList} start={16}>
           {[
             "In case of damage to any part of the hostel buildings, furniture, apparatus or other property of the institute, caused by inmates of the hostel, the loss shall be recovered from the persons identified as responsible for such damage. However, if the persons causing damage cannot be identified, the cost of repairing the same as may be assessed will be charged equally amongst all the inmates of the hostel or group of inmates of the hostel found responsible for the damage.",
-            "Students should lock their room properly when they go out for bath, food etc. Each roommate must keep a key of the door lock of his/her room in case of double / triple/four seated accommodations.",
-            "Every student residing in the hostel must join the mess attached to that hostel. Individual cooking is not permitted. They are not allowed to cook anything in their rooms.",
-            "Every inmate of the hostel shall pay the mess bill and other charges as per the notified schedule failing which fine will be imposed as decided by the hostel authority. The approved rules regarding mess cut will be applicable to all the inmates of the hostel. Mess exemption on medical ground under extraordinary situation will be allowed with payment of service charge as decided by the hostel authority. Whenever a student is applying for rebate on medical grounds, he/she must submit a copy of medical certificate by the Medical Officer of the Institute or by the external doctor, if it is advised so by the Institute doctor.",
-            "Ragging in any form is a cognizable offence and severely punishable as per the Supreme Court directives leading to expulsion from the Hostel and the disciplinary action may culminate in his/her expulsion from the Institute as well. The Institute administration may report incidents of ragging to the Police for taking appropriate action under the law.",
-            "Students should take treatment in the Institute dispensary between 8AM to 6PM when they are sick. For emergency, between 6PM to 8AM they should contact the medical officer of the institute at his residence in the colony campus. The Institute doctor and the concerned hostel Warden In-charge and Warden will decide further course of treatment. Students are advised to take treatment at the nearest clinic and inform about it to the authorities immediately in case of emergency occurring outside the Institute campus.",
+            "Students should lock their room properly when they go out. Each roommate must keep a key of the door lock of his/her room in case of double / triple/four seated accommodations.",
+            "Every student residing in the hostel are not allowed to cook anything in their rooms,it is strictly prohibited and may lead to sever penalty.",
             "In case of need for hospitalization, student should inform his/her parents / guardian. Parents / guardian are required to communicate to the concerned Warden In-charge/ Warden in this regard.",
-            "Penalty for violation of hostel rules will be decided by the hostel authorities considering the severity of the offense / violation of rules / act of indiscipline. Fine/ penalty amount may be deducted from the hostel deposit. If cumulative fine exceeds Rs.1500/- per academic year, he / she will not be considered in merit for the next hostel admission.",
-            "Guests are not permitted to stay in the rooms of the students. The student must get permission for keeping his/her guest in the guest room of the Hostel from the concerned Warden In-charge. Any Guests under special circumstances are allowed to stay in hostel for one/two days with prior permission from Warden/Chief Warden/Management subjected to availability. Female guests are not permitted to stay in Boys Hostel. Likewise Male guests are not allowed to stay in the girl's hostel. A boarder keeping a guest without permission is liable for disciplinary action as per law and will be fined heavily.",
-            "Students are prohibited from giving shelter to any other student/outsider in the rooms. In case of any unauthorized shelter, the student will be liable to disciplinary action.",
+            "Penalty for violation of hostel rules will be decided by the hostel authorities considering the severity of the offense / violation of rules / act of indiscipline.",
+            "Guests/Dayscholars are not permitted to the hostel area. A boarder inviting a guest/dayscholar without permission is liable for disciplinary action as per norms and will be fined heavily.Students are prohibited from giving shelter to any other student/outsider in the rooms. In case of any unauthorized shelter, the student will be liable to disciplinary action.",
             "Resident students are not permitted to invite any outside person to address any meeting in the hostel without written permission of the Principal/Chief Executive Director.",
             "Lights, fans must be switched off when not in use. The use of electric heater, electric rod and other similar appliances are strictly prohibited. Boarders are warned against tempering with electric installation and for all electric repairs the official electrician should be called in.",
-            "Students, in their own interest, are advised not to keep excess cash or any valuables in their hostel rooms.",
-            "They are cautioned to be very careful about safety of their belongings. They should close their rooms securely when they leave the room even for short periods or when they are sleeping. Institute shall not be responsible for the loss of such items due to theft or otherwise. However, in the case of theft, the matter should be immediately reported to the concerned Warden In-charge/Warden and Chief Security Officer of the Institute.",
+            "Students, in their own interest, are advised not to keep cash or any valuables in their hostel rooms.It is recommended to keep digital currency instead of cash.",
+            "Boarder are cautioned to be very careful about safety of their belongings. They should close their rooms securely when they leave the room even for short periods or when they are sleeping. Institute/management/staff/student shall not be responsible for the loss of such items due to theft or otherwise. However, in the case of theft, the matter should be immediately reported to the concerned Warden In-charge/Warden and Chief Security Officer of the Institute.",
             "Male students are strictly forbidden from entering the Girls' Hostel and female students from entering Boy's Hostel.",
-            "Students are prohibited from consuming alcoholic drinks, drugs, cigarettes, tobacco products or any other intoxicants inside the hostel or to enter the hostel after consuming the same. Any student found consuming such thing or in a drunken state in the hostel will render himself liable for strict disciplinary action as per law, including expulsion/rustication from Hostel/Institute.",
+            "Students are prohibited from consuming alcoholic drinks, drugs, cigarettes, tobacco products or any other intoxicants inside the hostel or to enter the hostel after consuming the same. Any student found consuming such thing or in a drunken state in the hostel will render himself liable for strict disciplinary action as per norms, including expulsion/rustication from Hostel/Institute.",
             "Students are prohibited from screening/ keeping obscene literature/ video films in the possession. Any violation in this regard will result disciplinary action.",
-            "Going Home / Leave: Students who wish to go home or take leave from the hostel must obtain prior approval through Microsoft Teams (MS Teams) before leaving the hostel premises.",
+            "Going Home / Leave: Students who wish to go home or take leave from the hostel must obtain prior approval through Microsoft Teams (MS Teams) before leaving the hostel premises with parent consent to the hostel incharge.",
+            "Closing time for girls is 8:30PM and for boys it is 9:30PM.",
+            "The boarder should make entry in in/out register book kept at the security office.",
+            "The amount once paid towards hostel shall not be refunded at any circumstances.",
+            "If any meetings have been called even with immediate intimation all the mentioned students have to attend without fail.",
+            "If any classes or special classes have been assigned all the hostel residents have to attend those classes without fail.",
+          <strong>"Vacating procedure:"</strong>,"Last day of their final exam if they fail to vacate it will be considered as they are going to continue in the hostel for the upcoming academic year,the specified amount has to be paid.",
+            "With consent of parent if student is willing to vacate but keep their belongings in the room , then additional rental charges will be applied",
+            "I here by authorize the college(SVCE) to use , process ,store or share the information provided by me for application processing, academic records and compilance with statutory or regulatory authorities",
+            "Boarders shall not take ,share or circulate their own or others private photographs/videos .Violation will result in strict disciplinary action.",
           ].map((text, i) => (
             <li key={i + 15} style={styles.rulesLi}>{text}</li>
           ))}
@@ -437,32 +505,6 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
 
       {/* ── PAGE 4 – Additional Rules, Undertaking & Declaration ── */}
       <div style={{ ...styles.a4Page, ...styles.rulesPage }} className="print-page-break haf-print-page">
-        <div style={styles.formCodeTop}>HOS01</div>
-
-        <div style={styles.additionalHeading}>Additional Rules for Girls' Hostel:</div>
-
-        <ol style={styles.rulesList} start={32}>
-          {[
-            "Closing time is 8:30 PM in the evening under any circumstances.",
-            "No male visitor is allowed to enter the Girls' Hostel without prior permission of the respective Warden In-charge/Warden.",
-            "The girl students must make entry in the \"In/Out Register\" kept at the Security office.",
-          ].map((text, i) => (
-            <li key={i + 32} style={styles.rulesLi}>{text}</li>
-          ))}
-        </ol>
-
-        <div style={styles.additionalHeading}>Additional Rules for Boys' Hostel:</div>
-
-        <ol style={styles.rulesList} start={35}>
-          {[
-            "Closing time is 9:30 PM in the Night under any circumstances.",
-            "No female visitor is allowed to enter the Boys' Hostel without prior permission of the respective Warden In-charge/Warden.",
-            "The boy's students must make entry in the \"In/Out Register\" kept at the Security office.",
-          ].map((text, i) => (
-            <li key={i + 35} style={styles.rulesLi}>{text}</li>
-          ))}
-        </ol>
-
         <div style={styles.noteText}>
           Note: Read carefully the rules and regulations form before submitting the application form.
         </div>

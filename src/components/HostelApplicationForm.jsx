@@ -16,10 +16,9 @@ const BRANCH_MAP = {
 };
 
 const HOSTEL_BLOCK_MAP = {
-  Male: ['Boys Hostel'],
-  Female: ['Girls Hostel'],
-  Other: ['Boys Hostel', 'Girls Hostel', 'Guest House'],
-  '': ['Boys Hostel', 'Girls Hostel', 'Guest House'],
+  Male: ['Boys Hostel 1', 'Boys Hostel 2', 'Guest House'],
+  Female: ['Girls Hostel', 'Guest House'],
+  '': ['Boys Hostel 1', 'Boys Hostel 2', 'Girls Hostel', 'Guest House'],
 };
 
 const BLOOD_GROUPS = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
@@ -120,9 +119,12 @@ export default function HostelApplicationForm({ onSubmit }) {
     year: '',
     branch: '',
     usn: '',
-    parentName: '',
-    parentOccupation: '',
-    parentPhone: '',
+    fatherName: '',
+    fatherOccupation: '',
+    fatherPhone: '',
+    motherName: '',
+    motherOccupation: '',
+    motherPhone: '',
     parentAddress: '',
     guardianName: '',
     guardianOccupation: '',
@@ -153,6 +155,8 @@ export default function HostelApplicationForm({ onSubmit }) {
       e.studentEmail = 'Enter a valid email address.';
     if (!f.gender)
       e.gender = 'Gender is required.';
+    if (!f.dob)
+      e.dob = 'Date of birth is required.';
     // Academic Details
     if (!f.course)
       e.course = 'Course is required.';
@@ -160,24 +164,6 @@ export default function HostelApplicationForm({ onSubmit }) {
       e.year = 'Year is required.';
     if (!f.branch)
       e.branch = 'Branch is required.';
-    // Guardian / Father / Mother Details
-    if (!f.parentName.trim())
-      e.parentName = 'Guardian / Parent name is required.';
-    if (!f.parentPhone.trim())
-      e.parentPhone = 'Guardian / Parent phone number is required.';
-    else if (!/^\d{10}$/.test(f.parentPhone.trim()))
-      e.parentPhone = 'Enter a valid 10-digit phone number.';
-    // Local Guardian Details
-    if (!f.guardianName.trim())
-      e.guardianName = 'Guardian name is required.';
-    if (!f.guardianOccupation)
-      e.guardianOccupation = 'Guardian occupation is required.';
-    if (!f.guardianPhone.trim())
-      e.guardianPhone = 'Guardian phone number is required.';
-    else if (!/^\d{10}$/.test(f.guardianPhone.trim()))
-      e.guardianPhone = 'Enter a valid 10-digit phone number.';
-    if (!f.guardianAddress.trim())
-      e.guardianAddress = 'Guardian address is required.';
     // Hostel Details
     if (!f.hostelBlock)
       e.hostelBlock = 'Hostel block is required.';
@@ -234,9 +220,12 @@ export default function HostelApplicationForm({ onSubmit }) {
       year: form.year,
       branch: form.branch,
       universityNo: form.usn,
-      parentName: form.parentName,
-      parentOccupation: form.parentOccupation,
-      parentPhone: form.parentPhone,
+      fatherName: form.fatherName,
+      fatherOccupation: form.fatherOccupation,
+      fatherPhone: form.fatherPhone,
+      motherName: form.motherName,
+      motherOccupation: form.motherOccupation,
+      motherPhone: form.motherPhone,
       parentAddress: form.parentAddress,
       guardianName: form.guardianName,
       guardianOccupation: form.guardianOccupation,
@@ -254,7 +243,9 @@ export default function HostelApplicationForm({ onSubmit }) {
       photo: '', studentName: '', studentPhone: '', studentEmail: '',
       gender: '', age: '', dob: '', bloodGroup: '',
       course: '', year: '', branch: '', usn: '',
-      parentName: '', parentOccupation: '', parentPhone: '', parentAddress: '',
+      fatherName: '', fatherOccupation: '', fatherPhone: '',
+      motherName: '', motherOccupation: '', motherPhone: '',
+      parentAddress: '',
       guardianName: '', guardianOccupation: '', guardianPhone: '', guardianAddress: '',
       hostelBlock: '', roomNumber: '', foodPreference: '',
     });
@@ -371,9 +362,10 @@ export default function HostelApplicationForm({ onSubmit }) {
                           max={35}
                         />
                       </Field>
-                      <Field label="Date of Birth">
+                      <Field label="Date of Birth" required error={errors.dob}>
                         <input
-                          className="haf-input"
+                          data-field="dob"
+                          className={`haf-input${errors.dob ? ' haf-input--error' : ''}`}
                           type="date"
                           value={form.dob}
                           onChange={set('dob')}
@@ -445,7 +437,7 @@ export default function HostelApplicationForm({ onSubmit }) {
                       ))}
                     </select>
                   </Field>
-                  <Field label="University Seat Number">
+                  <Field label="USN/Contineo Number">
                     <input
                       className="haf-input"
                       type="text"
@@ -460,44 +452,78 @@ export default function HostelApplicationForm({ onSubmit }) {
             </section>
 
             {/* ════════════════════════════════════
-                PARENT / MOTHER DETAILS
+                PARENT DETAILS
             ════════════════════════════════════ */}
             <section className="haf-section">
-              <SectionHeader icon="👨‍👩‍👧" title="Guardian / Father / Mother Details" />
+              <SectionHeader icon="👨‍👩‍👧" title="Parent Details" />
               <div className="haf-section-body">
-                <div className="haf-row">
-                  <Field label="Guardian / Father / Mother Name" required error={errors.parentName}>
-                    <input
-                      data-field="parentName"
-                      className={`haf-input${errors.parentName ? ' haf-input--error' : ''}`}
-                      type="text"
-                      placeholder="Enter name"
-                      value={form.parentName}
-                      onChange={set('parentName')}
-                    />
-                  </Field>
-                  <Field label="Occupation">
-                    <select className="haf-select" value={form.parentOccupation} onChange={set('parentOccupation')}>
-                      <option value="">Select occupation</option>
-                      {OCCUPATION_OPTIONS.map((o) => (
-                        <option key={o} value={o}>{o}</option>
-                      ))}
-                    </select>
-                  </Field>
+
+                {/* Father Details box */}
+                <div className="haf-parent-box">
+                  <div className="haf-parent-box-title">Father Details</div>
+                  <div className="haf-row haf-row--3">
+                    <Field label="Father's Name">
+                      <input
+                        className="haf-input"
+                        type="text"
+                        placeholder="Enter father's name"
+                        value={form.fatherName}
+                        onChange={set('fatherName')}
+                      />
+                    </Field>
+                    <Field label="Occupation">
+                      <select className="haf-select" value={form.fatherOccupation} onChange={set('fatherOccupation')}>
+                        <option value="">Select occupation</option>
+                        {OCCUPATION_OPTIONS.map((o) => (
+                          <option key={o} value={o}>{o}</option>
+                        ))}
+                      </select>
+                    </Field>
+                    <Field label="Phone Number">
+                      <input
+                        className="haf-input"
+                        type="tel"
+                        placeholder="10-digit number"
+                        value={form.fatherPhone}
+                        onChange={set('fatherPhone')}
+                        maxLength={10}
+                      />
+                    </Field>
+                  </div>
                 </div>
 
-                <div className="haf-row">
-                  <Field label="Phone Number" required error={errors.parentPhone}>
-                    <input
-                      data-field="parentPhone"
-                      className={`haf-input${errors.parentPhone ? ' haf-input--error' : ''}`}
-                      type="tel"
-                      placeholder="10-digit number"
-                      value={form.parentPhone}
-                      onChange={set('parentPhone')}
-                      maxLength={10}
-                    />
-                  </Field>
+                {/* Mother Details box */}
+                <div className="haf-parent-box">
+                  <div className="haf-parent-box-title">Mother Details</div>
+                  <div className="haf-row haf-row--3">
+                    <Field label="Mother's Name">
+                      <input
+                        className="haf-input"
+                        type="text"
+                        placeholder="Enter mother's name"
+                        value={form.motherName}
+                        onChange={set('motherName')}
+                      />
+                    </Field>
+                    <Field label="Occupation">
+                      <select className="haf-select" value={form.motherOccupation} onChange={set('motherOccupation')}>
+                        <option value="">Select occupation</option>
+                        {OCCUPATION_OPTIONS.map((o) => (
+                          <option key={o} value={o}>{o}</option>
+                        ))}
+                      </select>
+                    </Field>
+                    <Field label="Phone Number">
+                      <input
+                        className="haf-input"
+                        type="tel"
+                        placeholder="10-digit number"
+                        value={form.motherPhone}
+                        onChange={set('motherPhone')}
+                        maxLength={10}
+                      />
+                    </Field>
+                  </div>
                 </div>
 
                 <div className="haf-row haf-row--full">
@@ -521,20 +547,18 @@ export default function HostelApplicationForm({ onSubmit }) {
               <SectionHeader icon="🏠" title="Local Guardian Details" />
               <div className="haf-section-body">
                 <div className="haf-row">
-                  <Field label="Guardian Name" required error={errors.guardianName}>
+                  <Field label="Guardian Name">
                     <input
-                      data-field="guardianName"
-                      className={`haf-input${errors.guardianName ? ' haf-input--error' : ''}`}
+                      className="haf-input"
                       type="text"
                       placeholder="Enter name"
                       value={form.guardianName}
                       onChange={set('guardianName')}
                     />
                   </Field>
-                  <Field label="Guardian Occupation" required error={errors.guardianOccupation}>
+                  <Field label="Guardian Occupation">
                     <select
-                      data-field="guardianOccupation"
-                      className={`haf-select${errors.guardianOccupation ? ' haf-select--error' : ''}`}
+                      className="haf-select"
                       value={form.guardianOccupation}
                       onChange={set('guardianOccupation')}
                     >
@@ -547,10 +571,9 @@ export default function HostelApplicationForm({ onSubmit }) {
                 </div>
 
                 <div className="haf-row">
-                  <Field label="Guardian Phone" required error={errors.guardianPhone}>
+                  <Field label="Guardian Phone">
                     <input
-                      data-field="guardianPhone"
-                      className={`haf-input${errors.guardianPhone ? ' haf-input--error' : ''}`}
+                      className="haf-input"
                       type="tel"
                       placeholder="10-digit number"
                       value={form.guardianPhone}
@@ -561,10 +584,9 @@ export default function HostelApplicationForm({ onSubmit }) {
                 </div>
 
                 <div className="haf-row haf-row--full">
-                  <Field label="Guardian Address" required error={errors.guardianAddress}>
+                  <Field label="Guardian Address">
                     <textarea
-                      data-field="guardianAddress"
-                      className={`haf-textarea${errors.guardianAddress ? ' haf-input--error' : ''}`}
+                      className="haf-textarea"
                       placeholder="Enter full address"
                       value={form.guardianAddress}
                       onChange={set('guardianAddress')}
