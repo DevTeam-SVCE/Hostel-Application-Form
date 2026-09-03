@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import svceLogo from '../assets/svce_svg.png';
+import svceLogo from '../assets/SVCE_LOGO.jpeg';
 import './HostelApplicationForm.css';
 
 // ── Dropdown data ──────────────────────────────────────────────
@@ -107,7 +107,6 @@ export default function HostelApplicationForm({ onSubmit }) {
   const academicYear = `${currentYear}-${(currentYear + 1).toString().slice(-2)}`;
 
   const [form, setForm] = useState({
-    // Student Details
     photo: '',
     studentName: '',
     studentPhone: '',
@@ -116,44 +115,90 @@ export default function HostelApplicationForm({ onSubmit }) {
     age: '',
     dob: '',
     bloodGroup: '',
-    // Academic Details
     course: '',
     year: '',
     branch: '',
     usn: '',
-    // Parent / Mother Details
     parentName: '',
     parentOccupation: '',
     parentPhone: '',
     parentAddress: '',
-    // Local Guardian Details
     guardianName: '',
     guardianOccupation: '',
     guardianPhone: '',
     guardianAddress: '',
-    // Hostel Details
     hostelBlock: '',
     roomNumber: '',
     foodPreference: '',
   });
 
-  const set = (field) => (e) =>
+  const [errors, setErrors] = useState({});
+
+  // ── Validation ────────────────────────────────────────────────
+  function validate(f) {
+    const e = {};
+    if (!f.studentName.trim())
+      e.studentName = 'Student name is required.';
+    if (!f.studentPhone.trim())
+      e.studentPhone = 'Phone number is required.';
+    else if (!/^\d{10}$/.test(f.studentPhone.trim()))
+      e.studentPhone = 'Enter a valid 10-digit phone number.';
+    if (!f.studentEmail.trim())
+      e.studentEmail = 'Email address is required.';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.studentEmail.trim()))
+      e.studentEmail = 'Enter a valid email address.';
+    if (!f.gender)
+      e.gender = 'Gender is required.';
+    if (!f.course)
+      e.course = 'Course is required.';
+    if (!f.year)
+      e.year = 'Year is required.';
+    if (!f.branch)
+      e.branch = 'Branch is required.';
+    if (!f.usn.trim())
+      e.usn = 'University Seat Number is required.';
+    if (!f.parentName.trim())
+      e.parentName = 'Parent / Mother name is required.';
+    if (!f.hostelBlock)
+      e.hostelBlock = 'Hostel block is required.';
+    if (!f.foodPreference)
+      e.foodPreference = 'Food preference is required.';
+    return e;
+  }
+
+  const set = (field) => (e) => {
+    const value = e.target.value;
     setForm((prev) => {
-      const updated = { ...prev, [field]: e.target.value };
-      // Reset dependent fields when parent changes
+      const updated = { ...prev, [field]: value };
       if (field === 'course') updated.branch = '';
       if (field === 'gender') updated.hostelBlock = '';
       return updated;
     });
+    setErrors((prev) => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      if (field === 'course') delete next.branch;
+      if (field === 'gender') delete next.hostelBlock;
+      return next;
+    });
+  };
 
   const setPhoto = (val) => setForm((prev) => ({ ...prev, photo: val }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Map the form data to match HostelForm's expected structure
+    const validationErrors = validate(form);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      const firstKey = Object.keys(validationErrors)[0];
+      const el = document.querySelector(`[data-field="${firstKey}"]`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
     const formData = {
       academicYear,
-      applicationNo: '001', // Can be generated or passed from outside
+      applicationNo: '001',
       photograph: form.photo,
       studentName: form.studentName,
       studentPhone: form.studentPhone,
@@ -190,6 +235,7 @@ export default function HostelApplicationForm({ onSubmit }) {
       guardianName: '', guardianOccupation: '', guardianPhone: '', guardianAddress: '',
       hostelBlock: '', roomNumber: '', foodPreference: '',
     });
+    setErrors({});
   };
 
   const branchOptions = BRANCH_MAP[form.course] || [];
@@ -206,8 +252,7 @@ export default function HostelApplicationForm({ onSubmit }) {
         <div className="haf-college-header">
           <img src={svceLogo} alt="SVCE Logo" className="haf-college-logo" />
           <div className="haf-college-info">
-            <h1 className="haf-college-name">SRI VENKATESHWARA COLLEGE OF ENGINEERING</h1>
-            <p className="haf-college-city">BENGALURU</p>
+
           </div>
         </div>
 
@@ -238,41 +283,47 @@ export default function HostelApplicationForm({ onSubmit }) {
                   {/* Right: student fields */}
                   <div className="haf-student-fields">
                     <div className="haf-row">
-                      <Field label="Name of Student" required>
+                      <Field label="Name of Student" required error={errors.studentName}>
                         <input
-                          className="haf-input"
+                          data-field="studentName"
+                          className={`haf-input${errors.studentName ? ' haf-input--error' : ''}`}
                           type="text"
                           placeholder="Enter full name"
                           value={form.studentName}
                           onChange={set('studentName')}
-                          required
                         />
                       </Field>
-                      <Field label="Student Phone Number" required>
+                      <Field label="Student Phone Number" required error={errors.studentPhone}>
                         <input
-                          className="haf-input"
+                          data-field="studentPhone"
+                          className={`haf-input${errors.studentPhone ? ' haf-input--error' : ''}`}
                           type="tel"
                           placeholder="10-digit number"
                           value={form.studentPhone}
                           onChange={set('studentPhone')}
                           maxLength={10}
-                          pattern="[0-9]{10}"
                         />
                       </Field>
                     </div>
 
                     <div className="haf-row">
-                      <Field label="Student Email ID" required>
+                      <Field label="Student Email ID" required error={errors.studentEmail}>
                         <input
-                          className="haf-input"
+                          data-field="studentEmail"
+                          className={`haf-input${errors.studentEmail ? ' haf-input--error' : ''}`}
                           type="email"
                           placeholder="example@email.com"
                           value={form.studentEmail}
                           onChange={set('studentEmail')}
                         />
                       </Field>
-                      <Field label="Gender" required>
-                        <select className="haf-select" value={form.gender} onChange={set('gender')}>
+                      <Field label="Gender" required error={errors.gender}>
+                        <select
+                          data-field="gender"
+                          className={`haf-select${errors.gender ? ' haf-select--error' : ''}`}
+                          value={form.gender}
+                          onChange={set('gender')}
+                        >
                           <option value="">Select gender</option>
                           {GENDER_OPTIONS.map((g) => (
                             <option key={g} value={g}>{g}</option>
@@ -322,16 +373,26 @@ export default function HostelApplicationForm({ onSubmit }) {
               <SectionHeader icon="📚" title="Academic Details" />
               <div className="haf-section-body">
                 <div className="haf-row">
-                  <Field label="Course" required>
-                    <select className="haf-select" value={form.course} onChange={set('course')}>
+                  <Field label="Course" required error={errors.course}>
+                    <select
+                      data-field="course"
+                      className={`haf-select${errors.course ? ' haf-select--error' : ''}`}
+                      value={form.course}
+                      onChange={set('course')}
+                    >
                       <option value="">Select course</option>
                       {COURSE_OPTIONS.map((c) => (
                         <option key={c} value={c}>{c}</option>
                       ))}
                     </select>
                   </Field>
-                  <Field label="Year" required>
-                    <select className="haf-select" value={form.year} onChange={set('year')}>
+                  <Field label="Year" required error={errors.year}>
+                    <select
+                      data-field="year"
+                      className={`haf-select${errors.year ? ' haf-select--error' : ''}`}
+                      value={form.year}
+                      onChange={set('year')}
+                    >
                       <option value="">Select year</option>
                       {YEAR_OPTIONS.map((y) => (
                         <option key={y} value={y}>{y}</option>
@@ -341,9 +402,10 @@ export default function HostelApplicationForm({ onSubmit }) {
                 </div>
 
                 <div className="haf-row">
-                  <Field label="Branch" required>
+                  <Field label="Branch" required error={errors.branch}>
                     <select
-                      className="haf-select"
+                      data-field="branch"
+                      className={`haf-select${errors.branch ? ' haf-select--error' : ''}`}
                       value={form.branch}
                       onChange={set('branch')}
                       disabled={!form.course}
@@ -356,9 +418,10 @@ export default function HostelApplicationForm({ onSubmit }) {
                       ))}
                     </select>
                   </Field>
-                  <Field label="University Seat Number" required>
+                  <Field label="University Seat Number" required error={errors.usn}>
                     <input
-                      className="haf-input"
+                      data-field="usn"
+                      className={`haf-input${errors.usn ? ' haf-input--error' : ''}`}
                       type="text"
                       placeholder="e.g. 1SI22CS001"
                       value={form.usn}
@@ -376,9 +439,10 @@ export default function HostelApplicationForm({ onSubmit }) {
               <SectionHeader icon="👨‍👩‍👧" title="Guardian / Father / Mother Details" />
               <div className="haf-section-body">
                 <div className="haf-row">
-                  <Field label="Guardian / Father / Mother Name" required>
+                  <Field label="Guardian / Father / Mother Name" required error={errors.parentName}>
                     <input
-                      className="haf-input"
+                      data-field="parentName"
+                      className={`haf-input${errors.parentName ? ' haf-input--error' : ''}`}
                       type="text"
                       placeholder="Enter name"
                       value={form.parentName}
@@ -482,9 +546,10 @@ export default function HostelApplicationForm({ onSubmit }) {
               <SectionHeader icon="🏨" title="Hostel Details" />
               <div className="haf-section-body">
                 <div className="haf-row">
-                  <Field label="Hostel Block" required>
+                  <Field label="Hostel Block" required error={errors.hostelBlock}>
                     <select
-                      className="haf-select"
+                      data-field="hostelBlock"
+                      className={`haf-select${errors.hostelBlock ? ' haf-select--error' : ''}`}
                       value={form.hostelBlock}
                       onChange={set('hostelBlock')}
                     >
@@ -509,8 +574,13 @@ export default function HostelApplicationForm({ onSubmit }) {
                 </div>
 
                 <div className="haf-row">
-                  <Field label="Food Preference" required>
-                    <div className="haf-radio-group" role="radiogroup" aria-label="Food preference">
+                  <Field label="Food Preference" required error={errors.foodPreference}>
+                    <div
+                      data-field="foodPreference"
+                      className={`haf-radio-group${errors.foodPreference ? ' haf-radio-group--error' : ''}`}
+                      role="radiogroup"
+                      aria-label="Food preference"
+                    >
                       {FOOD_OPTIONS.map((f) => (
                         <label key={f} className="haf-radio-label">
                           <input

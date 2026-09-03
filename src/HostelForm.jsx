@@ -1,35 +1,7 @@
-import svceLogo from './assets/svce_svg.png';
+import svceLogo from './assets/SVCE_LOGO.jpeg';
 
-export default function HostelApplicationForm({ data = {}, onBack }) {
-  const {
-    academicYear    = "",
-    applicationNo   = "",
-    photograph      = null,
-    studentName     = "",
-    studentPhone    = "",
-    studentEmail    = "",
-    sex             = "",
-    age             = "",
-    dob             = "",
-    bloodGroup      = "",
-    course          = "",
-    year            = "",
-    branch          = "",
-    universityNo    = "",
-    parentName      = "",
-    parentOccupation= "",
-    parentPhone     = "",
-    parentAddress   = "",
-    guardianName    = "",
-    guardianOccupation = "",
-    guardianPhone   = "",
-    guardianAddress = "",
-    hostelBlock     = "",
-    roomNo          = "",
-    food            = "",
-  } = data;
-
-  const styles = {
+// ── Styles are module-level constants so Row can reference them ──
+const styles = {
     body: {
       margin: 0,
       padding: "20px",
@@ -39,13 +11,10 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
     },
     a4Page: {
       width: "210mm",
-      height: "297mm",
       margin: "0 auto 25px auto",
       background: "white",
       padding: "10mm",
       position: "relative",
-      overflow: "hidden",
-      pageBreakAfter: "always",
     },
     collegeHeader: {
       display: "flex",
@@ -55,8 +24,8 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
       paddingBottom: "6px",
     },
     logo: {
-      width: "65px",
-      height: "65px",
+     
+      
       objectFit: "contain",
       marginRight: "12px",
     },
@@ -74,14 +43,14 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
       display: "flex",
       justifyContent: "space-between",
       border: "1px solid #000",
-      padding: "6px 8px",
+      padding: "4px 8px",
       fontSize: "12px",
-      marginBottom: "7px",
+      marginBottom: "4px",
     },
     sectionTitle: {
       background: "#eeeeee",
       border: "1px solid #000",
-      padding: "4px 6px",
+      padding: "3px 6px",
       fontWeight: "bold",
       fontSize: "12px",
     },
@@ -94,13 +63,13 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
       fontWeight: "bold",
       width: "27%",
       border: "1px solid #000",
-      padding: "5px 7px",
-      height: "27px",
+      padding: "3px 7px",
+      height: "23px",
     },
     valueCell: {
       border: "1px solid #000",
-      padding: "5px 7px",
-      height: "27px",
+      padding: "3px 7px",
+      height: "23px",
       fontSize: "12px",
     },
     photoCell: {
@@ -128,15 +97,15 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
       height: "100%",
       objectFit: "cover",
     },
-    signatureSection: { marginTop: "12px" },
+    signatureSection: { marginTop: "6px" },
     signatureTable: { width: "100%", borderCollapse: "collapse" },
     signatureTd: {
       border: "1px solid #000",
-      height: "55px",
+      height: "40px",
       verticalAlign: "bottom",
       textAlign: "center",
       fontSize: "11px",
-      paddingBottom: "6px",
+      paddingBottom: "5px",
     },
     rulesPage: { padding: "12mm" },
     formCodeTop: {
@@ -206,14 +175,47 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
       display: "inline-block",
       minWidth: "160px",
     },
-  };
+};
 
-  const Row = ({ label, value }) => (
+// ── Row helper — declared outside the component to satisfy the React
+//    Compiler's static-components rule ─────────────────────────────
+function Row({ label, value }) {
+  return (
     <tr>
       <td style={styles.label}>{label}</td>
       <td style={styles.valueCell}>{value}</td>
     </tr>
   );
+}
+
+export default function HostelApplicationForm({ data = {}, onBack }) {
+  const {
+    academicYear    = "",
+    applicationNo   = "",
+    photograph      = null,
+    studentName     = "",
+    studentPhone    = "",
+    studentEmail    = "",
+    sex             = "",
+    age             = "",
+    dob             = "",
+    bloodGroup      = "",
+    course          = "",
+    year            = "",
+    branch          = "",
+    universityNo    = "",
+    parentName      = "",
+    parentOccupation= "",
+    parentPhone     = "",
+    parentAddress   = "",
+    guardianName    = "",
+    guardianOccupation = "",
+    guardianPhone   = "",
+    guardianAddress = "",
+    hostelBlock     = "",
+    roomNo          = "",
+    food            = "",
+  } = data;
 
   return (
     <div style={styles.body}>
@@ -227,25 +229,31 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
             padding: 0;
             background: white;
           }
-          .a4-page {
-            page-break-after: always;
-            margin: 0;
-            padding: 15mm;
+          @page {
+            size: A4;
+            margin: 10mm;
+          }
+          .print-page-break {
+            break-before: page;
+          }
+          /* On print, the browser's own page margin provides the whitespace,
+             so remove the inline padding from the page div to reclaim ~20mm */
+          .haf-print-page {
+            padding: 0 !important;
+            margin: 0 auto !important;
           }
         }
       `}</style>
 
       {/* ── PAGE 1 – Application Form ── */}
-      <div style={styles.a4Page}>
+      <div style={styles.a4Page} className="haf-print-page">
         <div style={styles.collegeHeader}>
-          <img src={svceLogo} style={styles.logo} alt="SVCE Logo" />
-          <div style={styles.collegeName}>
-            <h1 style={styles.collegeH1}>SRI VENKATESHWARA COLLEGE OF ENGINEERING</h1>
-            <p style={styles.collegeP}>BENGALURU</p>
+          <div style={{ textAlign: "center" }}>
+            <img src={svceLogo} style={styles.logo} alt="SVCE Logo" />
             <h2 style={styles.collegeH2}>HOSTEL APPLICATION FORM</h2>
           </div>
         </div>
-
+      
         <div style={styles.formCode}>HOS01</div>
 
         <div style={styles.applicationInfo}>
@@ -353,7 +361,7 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
       </div>
 
       {/* ── PAGE 2 – Rules & Regulations (part 1) ── */}
-      <div style={{ ...styles.a4Page, ...styles.rulesPage }}>
+      <div style={{ ...styles.a4Page, ...styles.rulesPage }} className="print-page-break haf-print-page">
         <div style={styles.formCodeTop}>HOS01</div>
 
         <div style={styles.rulesTitle}>Rules and Regulations of Hostel</div>
@@ -398,7 +406,7 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
       </div>
 
       {/* ── PAGE 3 – Rules & Regulations (part 2) ── */}
-      <div style={{ ...styles.a4Page, ...styles.rulesPage }}>
+      <div style={{ ...styles.a4Page, ...styles.rulesPage }} className="print-page-break haf-print-page">
         <div style={styles.formCodeTop}>HOS01</div>
 
         <ol style={styles.rulesList} start={15}>
@@ -428,7 +436,7 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
       </div>
 
       {/* ── PAGE 4 – Additional Rules, Undertaking & Declaration ── */}
-      <div style={{ ...styles.a4Page, ...styles.rulesPage }}>
+      <div style={{ ...styles.a4Page, ...styles.rulesPage }} className="print-page-break haf-print-page">
         <div style={styles.formCodeTop}>HOS01</div>
 
         <div style={styles.additionalHeading}>Additional Rules for Girls' Hostel:</div>
