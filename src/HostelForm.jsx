@@ -1,50 +1,6 @@
-import svceLogo from "./Hostel-Application-Form/src/assets/svce_svg.png";
+import svceLogo from './assets/svce_svg.png';
 
-/**
- * HostelApplicationForm
- *
- * Props:
- *   data {object} – all fields from the application form. Shape:
- *   {
- *     // Meta
- *     academicYear:         string,   // e.g. "2026-27"
- *     applicationNo:        string,   // e.g. "001"
- *
- *     // Student Details
- *     photograph:           string,   // data-URL or object-URL from file input
- *     studentName:          string,
- *     studentPhone:         string,
- *     studentEmail:         string,
- *     sex:                  string,
- *     age:                  string | number,
- *     dob:                  string,   // "YYYY-MM-DD"
- *     bloodGroup:           string,
- *
- *     // Academic Details
- *     course:               string,
- *     year:                 string,
- *     branch:               string,
- *     universityNo:         string,
- *
- *     // Parent / Mother Details
- *     parentName:           string,
- *     parentOccupation:     string,
- *     parentPhone:          string,
- *     parentAddress:        string,
- *
- *     // Local Guardian Details
- *     guardianName:         string,
- *     guardianOccupation:   string,
- *     guardianPhone:        string,
- *     guardianAddress:      string,
- *
- *     // Hostel Details
- *     hostelBlock:          string,
- *     roomNo:               string,
- *     food:                 string,
- *   }
- */
-export default function HostelApplicationForm({ data = {} }) {
+export default function HostelApplicationForm({ data = {}, onBack }) {
   const {
     academicYear    = "",
     applicationNo   = "",
@@ -73,7 +29,6 @@ export default function HostelApplicationForm({ data = {} }) {
     food            = "",
   } = data;
 
-  /* ── inline styles (kept identical to the original CSS) ── */
   const styles = {
     body: {
       margin: 0,
@@ -135,11 +90,6 @@ export default function HostelApplicationForm({ data = {} }) {
       borderCollapse: "collapse",
       fontSize: "12px",
     },
-    td: {
-      border: "1px solid #000",
-      padding: "5px 7px",
-      height: "27px",
-    },
     label: {
       fontWeight: "bold",
       width: "27%",
@@ -151,7 +101,7 @@ export default function HostelApplicationForm({ data = {} }) {
       border: "1px solid #000",
       padding: "5px 7px",
       height: "27px",
-      fontSize: "14px",
+      fontSize: "12px",
     },
     photoCell: {
       width: "38mm",
@@ -258,7 +208,6 @@ export default function HostelApplicationForm({ data = {} }) {
     },
   };
 
-  /* Helper: render a labelled data row */
   const Row = ({ label, value }) => (
     <tr>
       <td style={styles.label}>{label}</td>
@@ -268,10 +217,26 @@ export default function HostelApplicationForm({ data = {} }) {
 
   return (
     <div style={styles.body}>
+      <style>{`
+        @media print {
+          .no-print {
+            display: none !important;
+          }
+          body {
+            margin: 0;
+            padding: 0;
+            background: white;
+          }
+          .a4-page {
+            page-break-after: always;
+            margin: 0;
+            padding: 15mm;
+          }
+        }
+      `}</style>
 
       {/* ── PAGE 1 – Application Form ── */}
       <div style={styles.a4Page}>
-
         <div style={styles.collegeHeader}>
           <img src={svceLogo} style={styles.logo} alt="SVCE Logo" />
           <div style={styles.collegeName}>
@@ -293,7 +258,6 @@ export default function HostelApplicationForm({ data = {} }) {
         <table style={styles.formTable}>
           <tbody>
             <tr>
-              {/* Photograph – spans 7 rows */}
               <td style={styles.photoCell} rowSpan={7}>
                 <div style={styles.photoBox}>
                   {photograph
@@ -386,13 +350,10 @@ export default function HostelApplicationForm({ data = {} }) {
             </tbody>
           </table>
         </div>
-
       </div>
-
 
       {/* ── PAGE 2 – Rules & Regulations (part 1) ── */}
       <div style={{ ...styles.a4Page, ...styles.rulesPage }}>
-
         <div style={styles.formCodeTop}>HOS01</div>
 
         <div style={styles.rulesTitle}>Rules and Regulations of Hostel</div>
@@ -434,13 +395,10 @@ export default function HostelApplicationForm({ data = {} }) {
             <li key={i} style={styles.rulesLi}>{text}</li>
           ))}
         </ol>
-
       </div>
-
 
       {/* ── PAGE 3 – Rules & Regulations (part 2) ── */}
       <div style={{ ...styles.a4Page, ...styles.rulesPage }}>
-
         <div style={styles.formCodeTop}>HOS01</div>
 
         <ol style={styles.rulesList} start={15}>
@@ -467,13 +425,10 @@ export default function HostelApplicationForm({ data = {} }) {
             <li key={i + 15} style={styles.rulesLi}>{text}</li>
           ))}
         </ol>
-
       </div>
-
 
       {/* ── PAGE 4 – Additional Rules, Undertaking & Declaration ── */}
       <div style={{ ...styles.a4Page, ...styles.rulesPage }}>
-
         <div style={styles.formCodeTop}>HOS01</div>
 
         <div style={styles.additionalHeading}>Additional Rules for Girls' Hostel:</div>
@@ -529,9 +484,61 @@ export default function HostelApplicationForm({ data = {} }) {
         </div>
 
         <div style={styles.signLine}>Signature of the Parent/Local Guardian</div>
-
       </div>
 
+      {/* ── Action Buttons ── */}
+      <div style={{
+        display: 'flex',
+        gap: '12px',
+        justifyContent: 'center',
+        marginTop: '20px',
+        paddingBottom: '20px'
+      }} className="no-print">
+        <button
+          onClick={onBack}
+          style={{
+            padding: '10px 20px',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            border: '2px solid #007bff',
+            background: 'white',
+            color: '#007bff',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseOver={(e) => {
+            e.target.style.background = '#f0f8ff';
+          }}
+          onMouseOut={(e) => {
+            e.target.style.background = 'white';
+          }}
+        >
+          ← Back to Form
+        </button>
+        <button
+          onClick={() => window.print()}
+          style={{
+            padding: '10px 20px',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            border: 'none',
+            background: '#007bff',
+            color: 'white',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseOver={(e) => {
+            e.target.style.background = '#0056b3';
+          }}
+          onMouseOut={(e) => {
+            e.target.style.background = '#007bff';
+          }}
+        >
+          🖨️ Print / Save as PDF
+        </button>
+      </div>
     </div>
   );
 }

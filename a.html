@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SVCE Hostel Application</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    background: #eeeeee;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #111;
+}
+
+.a4-page {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 auto 25px auto;
+    background: white;
+    padding: 10mm;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+}
+
+.college-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid #000;
+    padding-bottom: 6px;
+}
+
+.logo {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    margin-right: 12px;
+}
+
+.college-name {
+    text-align: center;
+}
+
+.college-name h1 {
+    font-size: 19px;
+    margin: 0;
+    font-weight: bold;
+}
+
+.college-name h2 {
+    font-size: 17px;
+    margin: 6px 0 0;
+}
+
+.college-name p {
+    font-size: 11px;
+    margin: 3px 0;
+}
+
+.form-code {
+    text-align: right;
+    font-weight: bold;
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.application-info {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #000;
+    padding: 6px 8px;
+    font-size: 12px;
+    margin-bottom: 7px;
+}
+
+.section-title {
+    background: #eeeeee;
+    border: 1px solid #000;
+    padding: 4px 6px;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.form-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.form-table td {
+    border: 1px solid #000;
+    padding: 5px 7px;
+    height: 27px;
+}
+
+.label {
+    font-weight: bold;
+    width: 27%;
+}
+
+input,
+select {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    background: transparent;
+    color: #111;
+}
+
+input::placeholder {
+    color: #777;
+    font-size: 12px;
+}
+
+.photo-cell {
+    width: 38mm;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.photo-box {
+    width: 35mm;
+    height: 45mm;
+    border: 1px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    margin: auto;
+}
+
+.signature-section {
+    margin-top: 12px;
+}
+
+.signature-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.signature-table td {
+    border: 1px solid #000;
+    height: 55px;
+    vertical-align: bottom;
+    text-align: center;
+    font-size: 11px;
+    padding-bottom: 6px;
+}
+
+.rules-page {
+    padding: 12mm;
+}
+
+.form-code-top {
+    text-align: right;
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.rules-title {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: underline;
+    margin-bottom: 12px;
+}
+
+.sub-heading {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 12px;
+    margin-bottom: 7px;
+}
+
+.rules-list {
+    font-size: 11.5px;
+    line-height: 1.35;
+    padding-left: 0;
+    margin: 0;
+}
+
+.rules-list li {
+    margin-bottom: 7px;
+    text-align: justify;
+    padding-left: 4px;
+}
+
+.additional-heading {
+    font-weight: bold;
+    text-decoration: underline;
+    margin-top: 15px;
+    margin-bottom: 7px;
+    font-size: 13px;
+}
+
+.note-text {
+    margin-top: 17px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.undertaking-title,
+.declaration-title {
+    text-align: center;
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: 14px;
+    margin-top: 19px;
+    margin-bottom: 9px;
+}
+
+.undertaking-text,
+.declaration-text {
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: justify;
+}
+
+.sign-line {
+    text-align: right;
+    font-size: 12px;
+    margin-top: 32px;
+    font-weight: bold;
+}
+
+.dotted {
+    border-bottom: 1px dotted #000;
+    display: inline-block;
+    min-width: 160px;
+}
+
+@media print {
+    body {
+        background: white;
+        padding: 0;
+    }
+    .a4-page {
+        margin: 0;
+        box-shadow: none;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="a4-page">
+
+    <div class="college-header">
+        <img src="assets/svce-logo.png" class="logo" alt="SVCE Logo">
+        <div class="college-name">
+            <h1>SRI VENKATESHWARA COLLEGE OF ENGINEERING</h1>
+            <p>BENGALURU</p>
+            <h2>HOSTEL APPLICATION FORM</h2>
+        </div>
+    </div>
+
+    <div class="form-code">HOS01</div>
+
+    <div class="application-info">
+        <div><strong>ACADEMIC YEAR:</strong> 2026</div>
+        <div><strong>APPLICATION NO:</strong> <span id="applicationNumber">001</span></div>
+    </div>
+
+    <div class="section-title">STUDENT DETAILS</div>
+
+    <table class="form-table">
+        <tr>
+            <td class="photo-cell" rowspan="7">
+                <div class="photo-box">PASSPORT SIZE<br>PHOTOGRAPH</div>
+            </td>
+            <td class="label">Name of Student</td>
+            <td><input type="text" id="studentName" name="studentName" placeholder="Enter student name"></td>
+        </tr>
+        <tr>
+            <td class="label">Student Phone Number</td>
+            <td><input type="tel" id="studentPhone" name="studentPhone" placeholder="Enter phone number" maxlength="10"></td>
+        </tr>
+        <tr>
+            <td class="label">Student Email ID</td>
+            <td><input type="email" id="studentEmail" name="studentEmail" placeholder="Enter email ID"></td>
+        </tr>
+        <tr>
+            <td class="label">Sex</td>
+            <td><input type="text" id="sex" name="sex" placeholder="Enter sex"></td>
+        </tr>
+        <tr>
+            <td class="label">Age</td>
+            <td><input type="number" id="age" name="age" min="1" max="100"></td>
+        </tr>
+        <tr>
+            <td class="label">Date of Birth</td>
+            <td><input type="date" id="dob" name="dob"></td>
+        </tr>
+        <tr>
+            <td class="label">Blood Group</td>
+            <td><input type="text" id="bloodGroup" name="bloodGroup" placeholder="Example: B+"></td>
+        </tr>
+    </table>
+
+    <div class="section-title">ACADEMIC DETAILS</div>
+
+    <table class="form-table">
+        <tr>
+            <td class="label">Course</td>
+            <td><input type="text" id="course" name="course" placeholder="Enter course"></td>
+        </tr>
+        <tr>
+            <td class="label">Year</td>
+            <td><input type="text" id="year" name="year" placeholder="Enter year"></td>
+        </tr>
+        <tr>
+            <td class="label">Branch</td>
+            <td><input type="text" id="branch" name="branch" placeholder="Enter branch"></td>
+        </tr>
+        <tr>
+            <td class="label">University Seat Number</td>
+            <td><input type="text" id="universityNo" name="universityNo" placeholder="Enter university seat number"></td>
+        </tr>
+    </table>
+
+    <div class="section-title">PARENT / MOTHER DETAILS</div>
+
+    <table class="form-table">
+        <tr>
+            <td class="label">Parent / Mother Name</td>
+            <td><input type="text" id="parentName" name="parentName" placeholder="Enter parent / mother name"></td>
+        </tr>
+        <tr>
+            <td class="label">Occupation</td>
+            <td><input type="text" id="parentOccupation" name="parentOccupation" placeholder="Enter occupation"></td>
+        </tr>
+        <tr>
+            <td class="label">Phone Number</td>
+            <td><input type="tel" id="parentPhone" name="parentPhone" placeholder="Enter phone number" maxlength="10"></td>
+        </tr>
+        <tr>
+            <td class="label">Address</td>
+            <td><input type="text" id="parentAddress" name="parentAddress" placeholder="Enter address"></td>
+        </tr>
+    </table>
+
+    <div class="section-title">LOCAL GUARDIAN DETAILS</div>
+
+    <table class="form-table">
+        <tr>
+            <td class="label">Guardian Name</td>
+            <td><input type="text" id="guardianName" name="guardianName" placeholder="Enter guardian name"></td>
+        </tr>
+        <tr>
+            <td class="label">Guardian Occupation</td>
+            <td><input type="text" id="guardianOccupation" name="guardianOccupation" placeholder="Enter occupation"></td>
+        </tr>
+        <tr>
+            <td class="label">Guardian Phone</td>
+            <td><input type="tel" id="guardianPhone" name="guardianPhone" placeholder="Enter phone number" maxlength="10"></td>
+        </tr>
+        <tr>
+            <td class="label">Guardian Address</td>
+            <td><input type="text" id="guardianAddress" name="guardianAddress" placeholder="Enter address"></td>
+        </tr>
+    </table>
+
+    <div class="section-title">HOSTEL DETAILS</div>
+
+    <table class="form-table">
+        <tr>
+            <td class="label">Hostel Block</td>
+            <td><input type="text" id="hostelBlock" name="hostelBlock" placeholder="Enter hostel block"></td>
+        </tr>
+        <tr>
+            <td class="label">Room Number</td>
+            <td><input type="text" id="roomNo" name="roomNo" placeholder="Enter room number"></td>
+        </tr>
+        <tr>
+            <td class="label">Food</td>
+            <td><input type="text" id="food" name="food" placeholder="Enter food preference"></td>
+        </tr>
+    </table>
+
+    <div class="signature-section">
+        <table class="signature-table">
+            <tr>
+                <td>Student Signature</td>
+                <td>Warden Signature</td>
+                <td>Principal Signature</td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+
+<div class="a4-page rules-page">
+
+    <div class="form-code-top">HOS01</div>
+
+    <div class="rules-title">Rules and Regulations of Hostel</div>
+
+    <div class="sub-heading">Regulations:</div>
+
+    <ol class="rules-list">
+        <li>Hostel accommodation is provided with the Condition that the resident student will strictly abide by the Hostel Rules currently in force or as may be enforced from time to time.</li>
+        <li>Accommodation in the Hostel cannot be claimed as a matter of right.</li>
+        <li>The Institute Administration may refuse accommodation to any student who is known to have grossly violated the Hostel Rules or whose presence is likely to disturb the peace and tranquility of hostel.</li>
+        <li>Violation of hostel rules will make the student liable to disciplinary action including permanent expulsion from the hostel/Institute.</li>
+        <li>Students must remember that hostel is the home of the student on the campus and therefore, he/she should behave on the campus as well as outside in such a manner as to bring credit to him/her and to the Institution.</li>
+        <li>A student once admitted in the hostel, will continue to be a hostel inmate throughout the year unless otherwise debarred from the hostel on disciplinary grounds and he/she will have to pay the room rent for both the terms. Every student must be acquainted with all the rules and regulations of the Hostel. He / She must observe them strictly. Ignorance of rules will not be considered as an excuse.</li>
+    </ol>
+
+    <div class="sub-heading">Rules:</div>
+
+    <ol class="rules-list">
+        <li>Every student should stay in the room allotted to him/her. Mutual exchange of rooms after final allotment is not allowed. However, only the Chief Warden may allow as a special case on valid and reasonable ground. Violation of this rule will be considered an act of gross misconduct and attract appropriate disciplinary action against them including expulsion from Hostel/Institute and imposition of heavy fine.</li>
+        <li>Resident Students must look up the Hostel Notice Board regularly. The Warden Team member or any authorized member of the Institute staff can inspect the room of any student in the hostel at any time. Hostel inmates are supposed to keep ID-cards with them and must produce the same to any Hostel or Institute's authority whenever asked for.</li>
+        <li>No Resident Students should meet the Chairman/CED for ordinary matters. Warden In-charge of the concerned hostel is the right person for such matters. In next step they can approach to the Chief Warden.</li>
+        <li>All cases of illness should be reported to the concerned Warden In-charge/Warden Immediately.</li>
+        <li>No student should keep any fire-arms, lethal weapons, poisonous things or intoxicants of any kind in the Hostel. Students must not take law into their own hands, but must report all disputes to the hostel Warden In-charge/Warden. All kinds of shouting, fighting, gambling, stealing, violent knocking, maltreating or abusing are strictly prohibited. In such cases offender will be handed over to Police immediately.</li>
+        <li>The boarder shall have to vacate/Shift their accommodation as and when asked for to the identified place of accommodation by the Management. They should vacate the hostel rooms before they leave for the vacation so that annual maintenance is carried out. All the hostel articles issued to the students are returned to the caretaker before the students leave their rooms. They will be responsible for any loss/Damage caused to Hostel/College properties.</li>
+        <li>No boarder is allowed to engage a private servant or pet animals.</li>
+        <li>Students shall not remain absent from their hostels during night without the prior permission of the Warden In-charge/Warden.</li>
+        <li>Hostel students shall not leave the campus without prior permission of the Warden In-charge/Warden.</li>
+        <li>They shall have to apply in prescribed form in advance stating the reason for leaving and the address of destination. Hostel student who leave hostel without the permission from the concerned Warden shall be deemed to be missing and Parent/Guardian/Police authorities may be intimated in consultation with the Management.</li>
+        <li>The inmates of the hostel will not leave the hostel premises on holidays for the purpose of excursion or picnic or Project work. Prior permission of the Warden In-charge/Warden has to be obtained for going for any picnic or excursion. However for any eventuality that may occur during picnic/excursion, the responsibility does not lie with the Institute authorities.</li>
+        <li>Hostel inmates are supposed to take care of their health themselves. Student suffering from infectious disease has to leave for medical treatment to proper clinic/hospital or isolated place under intimation to the warden.</li>
+        <li>Formation of association of students on the basis of regions, caste or creed is not permitted, during their stay in the hostels.</li>
+        <li>Room furniture and electric fittings are required to be maintained by the inmates in good condition. At the time of allotment of room and leaving the hostel for the summer vacation, every student must take-over and hand-over, respectively, the hostel property carefully. Students should invariably vacate the hostel during vacation.</li>
+    </ol>
+
+</div>
+
+
+<div class="a4-page rules-page">
+
+    <div class="form-code-top">HOS01</div>
+
+    <ol class="rules-list" start="15">
+        <li>In case of damage to any part of the hostel buildings, furniture, apparatus or other property of the institute, caused by inmates of the hostel, the loss shall be recovered from the persons identified as responsible for such damage. However, if the persons causing damage cannot be identified, the cost of repairing the same as may be assessed will be charged equally amongst all the inmates of the hostel or group of inmates of the hostel found responsible for the damage.</li>
+        <li>Students should lock their room properly when they go out for bath, food etc. Each roommate must keep a key of the door lock of his/her room in case of double / triple/four seated accommodations.</li>
+        <li>Every student residing in the hostel must join the mess attached to that hostel. Individual cooking is not permitted. They are not allowed to cook anything in their rooms.</li>
+        <li>Every inmate of the hostel shall pay the mess bill and other charges as per the notified schedule failing which fine will be imposed as decided by the hostel authority. The approved rules regarding mess cut will be applicable to all the inmates of the hostel. Mess exemption on medical ground under extraordinary situation will be allowed with payment of service charge as decided by the hostel authority. Whenever a student is applying for rebate on medical grounds, he/she must submit a copy of medical certificate by the Medical Officer of the Institute or by the external doctor, if it is advised so by the Institute doctor.</li>
+        <li>Ragging in any form is a cognizable offence and severely punishable as per the Supreme Court directives leading to expulsion from the Hostel and the disciplinary action may culminate in his/her expulsion from the Institute as well. The Institute administration may report incidents of ragging to the Police for taking appropriate action under the law.</li>
+        <li>Students should take treatment in the Institute dispensary between 8AM to 6PM when they are sick. For emergency, between 6PM to 8AM they should contact the medical officer of the institute at his residence in the colony campus. The Institute doctor and the concerned hostel Warden In-charge and Warden will decide further course of treatment. Students are advised to take treatment at the nearest clinic and inform about it to the authorities immediately in case of emergency occurring outside the Institute campus.</li>
+        <li>In case of need for hospitalization, student should inform his/her parents / guardian. Parents / guardian are required to communicate to the concerned Warden In-charge/ Warden in this regard.</li>
+        <li>Penalty for violation of hostel rules will be decided by the hostel authorities considering the severity of the offense / violation of rules / act of indiscipline. Fine/ penalty amount may be deducted from the hostel deposit. If cumulative fine exceeds Rs.1500/- per academic year, he / she will not be considered in merit for the next hostel admission.</li>
+        <li>Guests are not permitted to stay in the rooms of the students. The student must get permission for keeping his/her guest in the guest room of the Hostel from the concerned Warden In-charge. Any Guests under special circumstances are allowed to stay in hostel for one/two days with prior permission from Warden/Chief Warden/Management subjected to availability. Female guests are not permitted to stay in Boys Hostel. Likewise Male guests are not allowed to stay in the girl's hostel. A boarder keeping a guest without permission is liable for disciplinary action as per law and will be fined heavily.</li>
+        <li>Students are prohibited from giving shelter to any other student/outsider in the rooms. In case of any unauthorized shelter, the student will be liable to disciplinary action.</li>
+        <li>Resident students are not permitted to invite any outside person to address any meeting in the hostel without written permission of the Principal/Chief Executive Director.</li>
+        <li>Lights, fans must be switched off when not in use. The use of electric heater, electric rod and other similar appliances are strictly prohibited. Boarders are warned against tempering with electric installation and for all electric repairs the official electrician should be called in.</li>
+        <li>Students, in their own interest, are advised not to keep excess cash or any valuables in their hostel rooms.</li>
+        <li>They are cautioned to be very careful about safety of their belongings. They should close their rooms securely when they leave the room even for short periods or when they are sleeping. Institute shall not be responsible for the loss of such items due to theft or otherwise. However, in the case of theft, the matter should be immediately reported to the concerned Warden In-charge/Warden and Chief Security Officer of the Institute.</li>
+        <li>Male students are strictly forbidden from entering the Girls' Hostel and female students from entering Boy's Hostel.</li>
+        <li>Students are prohibited from consuming alcoholic drinks, drugs, cigarettes, tobacco products or any other intoxicants inside the hostel or to enter the hostel after consuming the same. Any student found consuming such thing or in a drunken state in the hostel will render himself liable for strict disciplinary action as per law, including expulsion/rustication from Hostel/Institute.</li>
+        <li>Students are prohibited from screening/ keeping obscene literature/ video films in the possession. Any violation in this regard will result disciplinary action.</li>
+        <li>Going Home / Leave: Students who wish to go home or take leave from the hostel must obtain prior approval through Microsoft Teams (MS Teams) before leaving the hostel premises.</li>
+    </ol>
+
+</div>
+
+
+<div class="a4-page rules-page">
+
+    <div class="form-code-top">HOS01</div>
+
+    <div class="additional-heading">Additional Rules for Girls' Hostel:</div>
+
+    <ol class="rules-list" start="32">
+        <li>Closing time is 8:30 PM in the evening under any circumstances.</li>
+        <li>No male visitor is allowed to enter the Girls' Hostel without prior permission of the respective Warden In-charge/Warden.</li>
+        <li>The girl students must make entry in the "In/Out Register" kept at the Security office.</li>
+    </ol>
+
+    <div class="additional-heading">Additional Rules for Boys' Hostel:</div>
+
+    <ol class="rules-list" start="35">
+        <li>Closing time is 9:30 PM in the Night under any circumstances.</li>
+        <li>No female visitor is allowed to enter the Boys' Hostel without prior permission of the respective Warden In-charge/Warden.</li>
+        <li>The boy's students must make entry in the "In/Out Register" kept at the Security office.</li>
+    </ol>
+
+    <div class="note-text">
+        Note: Read carefully the rules and regulations form before submitting the application form.
+    </div>
+
+    <div class="undertaking-title">UNDERTAKING BY HOSTEL INMATE</div>
+
+    <div class="undertaking-text">
+        I have fully understood the rules and regulations of hostel. I promise that I will not violate the rules and regulations. Any time I am found violating this, I may be out of the hostel giving 24 hours notice. In case I do not vacate, I may be forcibly made to vacate, including clearing my belongings. This has been intimated to my parents and their consent has been taken.
+        <br><br>
+        In case I am fined for violating the rules/guidelines as a warning and if I do not pay the fine with in the stipulated period, I may be sent out within 24 hours notice on Indisciplinary measure and that I will forfeit the entire amount paid to the hostel including the caution deposit if any.
+    </div>
+
+    <div class="sign-line">Signature of the student</div>
+
+    <div class="declaration-title">DECLARATION BY PARENT</div>
+
+    <div class="declaration-text">
+        My ward <span class="dotted">&nbsp;</span> Studying in <span class="dotted" style="min-width:60px;">&nbsp;</span> Year of <span class="dotted">&nbsp;</span> Branch may kindly be accommodated in the hostel. He/She will abide by rules and regulations of the hostel as specified from time to time, failing which he/she may be rusticated from the hostel within 24 hours notice, without any further intimation. Mr./Miss <span class="dotted">&nbsp;</span> will be local Guardian whose address and phone numbers are furnished in the application form.
+    </div>
+
+    <div class="sign-line">Signature of the Parent/Local Guardian</div>
+
+</div>
+
+</body>
+</html>
