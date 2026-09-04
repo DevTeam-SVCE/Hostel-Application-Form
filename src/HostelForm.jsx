@@ -4,16 +4,16 @@ import svceLogo from './assets/SVCE_LOGO.jpeg';
 const styles = {
     body: {
       margin: 0,
-      padding: "20px",
+      padding: "10px",
       background: "#eeeeee",
       fontFamily: "Arial, Helvetica, sans-serif",
       color: "#111",
     },
     a4Page: {
       width: "210mm",
-      margin: "0 auto 25px auto",
+      margin: "0 auto 10px auto",
       background: "white",
-      padding: "10mm",
+      padding: "8mm",
       position: "relative",
     },
     collegeHeader: {
@@ -61,16 +61,24 @@ const styles = {
     },
     label: {
       fontWeight: "bold",
-      width: "27%",
+      width: "20%",
       border: "1px solid #000",
       padding: "3px 7px",
-      height: "23px",
+      height: "auto",
+      minHeight: "23px",
+      whiteSpace: "normal",
     },
     valueCell: {
       border: "1px solid #000",
       padding: "3px 7px",
-      height: "23px",
+      height: "auto",
+      minHeight: "23px",
       fontSize: "12px",
+      wordBreak: "break-word",
+      overflowWrap: "break-word",
+      wordWrap: "break-word",
+      whiteSpace: "normal",
+      overflow: "visible",
     },
     photoCell: {
       width: "38mm",
@@ -97,11 +105,11 @@ const styles = {
       height: "100%",
       objectFit: "cover",
     },
-    signatureSection: { marginTop: "6px" },
+    signatureSection: { marginTop: "3px" },
     signatureTable: { width: "100%", borderCollapse: "collapse" },
     signatureTd: {
       border: "1px solid #000",
-      height: "40px",
+      height: "80px",
       verticalAlign: "bottom",
       textAlign: "center",
       fontSize: "11px",
@@ -119,55 +127,55 @@ const styles = {
       fontSize: "16px",
       fontWeight: "bold",
       textDecoration: "underline",
-      marginBottom: "12px",
+      marginBottom: "8px",
     },
     subHeading: {
       fontSize: "14px",
       fontWeight: "bold",
-      marginTop: "12px",
-      marginBottom: "7px",
+      marginTop: "6px",
+      marginBottom: "4px",
     },
     rulesList: {
       fontSize: "11.5px",
-      lineHeight: 1.35,
+      lineHeight: 1.2,
       paddingLeft: 0,
       margin: 0,
     },
     rulesLi: {
-      marginBottom: "7px",
+      marginBottom: "3px",
       textAlign: "justify",
       paddingLeft: "4px",
     },
     additionalHeading: {
       fontWeight: "bold",
       textDecoration: "underline",
-      marginTop: "15px",
-      marginBottom: "7px",
+      marginTop: "8px",
+      marginBottom: "4px",
       fontSize: "13px",
     },
-    noteText: { marginTop: "17px", fontSize: "12px", fontWeight: "bold" },
+    noteText: { marginTop: "8px", fontSize: "12px", fontWeight: "bold" },
     undertakingTitle: {
       textAlign: "center",
       fontWeight: "bold",
       textDecoration: "underline",
       fontSize: "14px",
-      marginTop: "19px",
-      marginBottom: "9px",
+      marginTop: "8px",
+      marginBottom: "4px",
     },
     declarationTitle: {
       textAlign: "center",
       fontWeight: "bold",
       textDecoration: "underline",
       fontSize: "14px",
-      marginTop: "19px",
-      marginBottom: "9px",
+      marginTop: "8px",
+      marginBottom: "4px",
     },
-    undertakingText: { fontSize: "12px", lineHeight: 1.5, textAlign: "justify" },
-    declarationText: { fontSize: "12px", lineHeight: 1.5, textAlign: "justify" },
+    undertakingText: { fontSize: "12px", lineHeight: 1.25, textAlign: "justify" },
+    declarationText: { fontSize: "12px", lineHeight: 1.25, textAlign: "justify" },
     signLine: {
       textAlign: "right",
       fontSize: "12px",
-      marginTop: "32px",
+      marginTop: "25px",
       fontWeight: "bold",
     },
     dotted: {
@@ -224,23 +232,53 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
           .no-print {
             display: none !important;
           }
-          body {
-            margin: 0;
-            padding: 0;
-            background: white;
+          * {
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+          html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            background: white !important;
+            font-size: 12px;
+            height: auto;
           }
           @page {
             size: A4;
-            margin: 10mm;
+            margin: 6mm;
           }
           .print-page-break {
-            break-before: page;
+            page-break-before: always;
           }
-          /* On print, the browser's own page margin provides the whitespace,
-             so remove the inline padding from the page div to reclaim ~20mm */
+          /* Ensure proper page layout with margins */
           .haf-print-page {
-            padding: 0 !important;
-            margin: 0 auto !important;
+            padding: 5mm !important;
+            margin: 0 !important;
+            width: 210mm !important;
+            height: 297mm !important;
+            box-sizing: border-box !important;
+            page-break-after: auto;
+            page-break-inside: avoid;
+            overflow: hidden;
+          }
+          /* Ensure content stays within page bounds */
+          table {
+            width: 100% !important;
+            table-layout: fixed;
+            page-break-inside: avoid;
+          }
+          td {
+            box-sizing: border-box !important;
+            page-break-inside: avoid;
+          }
+          ol {
+            margin: 0 !important;
+            padding-left: 18px !important;
+            page-break-inside: avoid;
+          }
+          li {
+            margin-bottom: 2px !important;
+            page-break-inside: avoid;
           }
         }
       `}</style>
@@ -286,7 +324,7 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
               <td style={styles.valueCell}>{studentEmail}</td>
             </tr>
             <tr>
-              <td style={styles.label}>Sex</td>
+              <td style={styles.label}>Gender</td>
               <td style={styles.valueCell}>{sex}</td>
             </tr>
             <tr>
@@ -315,14 +353,22 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
           </tbody>
         </table>
 
-        <div style={styles.sectionTitle}>PARENT / MOTHER DETAILS</div>
+        <div style={styles.sectionTitle}>GAURDIAN/ FATHER/ MOTHER DETAILS</div>
 
         <table style={styles.formTable}>
           <tbody>
-            <Row label="Parent / Mother Name" value={parentName}       />
-            <Row label="Occupation"           value={parentOccupation} />
-            <Row label="Phone Number"         value={parentPhone}      />
-            <Row label="Address"              value={parentAddress}    />
+            <tr>
+              <td style={styles.label}>Gaurdian/ Father/ Mother Name</td>
+              <td style={styles.valueCell}>{parentName}</td>
+              <td style={styles.label}>Occupation</td>
+              <td style={{...styles.valueCell, wordBreak: 'break-word', whiteSpace: 'normal'}}>{parentOccupation}</td>
+            </tr>
+            <tr>
+              <td style={styles.label}>Phone Number</td>
+              <td style={styles.valueCell}>{parentPhone}</td>
+              <td style={{...styles.label, verticalAlign: 'top'}}>Address</td>
+              <td style={{...styles.valueCell, verticalAlign: 'top', height: 'auto', minHeight: '54px', wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal'}}>{parentAddress}</td>
+            </tr>
           </tbody>
         </table>
 
@@ -330,10 +376,18 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
 
         <table style={styles.formTable}>
           <tbody>
-            <Row label="Guardian Name"       value={guardianName}       />
-            <Row label="Guardian Occupation" value={guardianOccupation} />
-            <Row label="Guardian Phone"      value={guardianPhone}      />
-            <Row label="Guardian Address"    value={guardianAddress}    />
+            <tr>
+              <td style={styles.label}>Guardian Name</td>
+              <td style={styles.valueCell}>{guardianName}</td>
+              <td style={styles.label}>Guardian Occupation</td>
+              <td style={{...styles.valueCell, wordBreak: 'break-word', whiteSpace: 'normal'}}>{guardianOccupation}</td>
+            </tr>
+            <tr>
+              <td style={styles.label}>Guardian Phone</td>
+              <td style={styles.valueCell}>{guardianPhone}</td>
+              <td style={{...styles.label, verticalAlign: 'top'}}>Guardian Address</td>
+              <td style={{...styles.valueCell, verticalAlign: 'top', height: 'auto', minHeight: '54px', wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal'}}>{guardianAddress}</td>
+            </tr>
           </tbody>
         </table>
 
@@ -474,7 +528,7 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
           <br /><br />
           In case I am fined for violating the rules/guidelines as a warning and if I do not pay the fine with in the stipulated period, I may be sent out within 24 hours notice on Indisciplinary measure and that I will forfeit the entire amount paid to the hostel including the caution deposit if any.
         </div>
-
+          <br />
         <div style={styles.signLine}>Signature of the student</div>
 
         <div style={styles.declarationTitle}>DECLARATION BY PARENT</div>
@@ -490,7 +544,7 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
           <span style={styles.dotted}>{guardianName || "\u00a0"}</span>
           {" "}will be local Guardian whose address and phone numbers are furnished in the application form.
         </div>
-
+          <br />
         <div style={styles.signLine}>Signature of the Parent/Local Guardian</div>
       </div>
 

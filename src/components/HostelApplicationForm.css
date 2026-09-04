@@ -420,6 +420,13 @@
   box-shadow: 0 4px 14px rgba(30,58,95,0.3);
 }
 
+.haf-btn--primary:disabled,
+.haf-btn--ghost:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .haf-btn--ghost {
   background: transparent;
   color: #64748b;
@@ -429,6 +436,34 @@
   background: #f1f5f9;
   border-color: #94a3b8;
   color: #374151;
+}
+
+/* ── Alert messages ── */
+.haf-alert {
+  margin: 0 32px 16px 32px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.haf-alert--error {
+  background: #fef2f2;
+  border: 1.5px solid #fecaca;
+  color: #dc2626;
+}
+
+.haf-spinner {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* ── Print ── */

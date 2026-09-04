@@ -16,7 +16,7 @@ function App() {
   return submittedData ? (
     <HostelForm data={submittedData} onBack={handleBackToForm} />
   ) : (
-    <HostelApplicationForm onSubmit={handleFormSubmit} />
+    <HostelApplicationForm onSubmit={handleFormSubmit} initialData={submittedData} />
   );
 }
 
