@@ -1,4 +1,200 @@
-import svceLogo from './assets/svce_svg.png';
+import svceLogo from './assets/SVCE_LOGO.jpeg';
+
+// ── Styles are module-level constants so Row can reference them ──
+const styles = {
+    body: {
+      margin: 0,
+      padding: "10px",
+      background: "#eeeeee",
+      fontFamily: "Arial, Helvetica, sans-serif",
+      color: "#111",
+    },
+    a4Page: {
+      width: "210mm",
+      margin: "0 auto 10px auto",
+      background: "white",
+      padding: "8mm",
+      position: "relative",
+    },
+    collegeHeader: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      borderBottom: "2px solid #000",
+      paddingBottom: "6px",
+    },
+    logo: {
+     
+      
+      objectFit: "contain",
+      marginRight: "12px",
+    },
+    collegeName: { textAlign: "center" },
+    collegeH1: { fontSize: "19px", margin: 0, fontWeight: "bold" },
+    collegeH2: { fontSize: "17px", margin: "6px 0 0" },
+    collegeP:  { fontSize: "11px", margin: "3px 0" },
+    formCode: {
+      textAlign: "right",
+      fontWeight: "bold",
+      fontSize: "11px",
+      marginTop: "3px",
+    },
+    applicationInfo: {
+      display: "flex",
+      justifyContent: "space-between",
+      border: "1px solid #000",
+      padding: "4px 8px",
+      fontSize: "12px",
+      marginBottom: "4px",
+    },
+    sectionTitle: {
+      background: "#eeeeee",
+      border: "1px solid #000",
+      padding: "3px 6px",
+      fontWeight: "bold",
+      fontSize: "12px",
+    },
+    formTable: {
+      width: "100%",
+      borderCollapse: "collapse",
+      fontSize: "12px",
+    },
+    label: {
+      fontWeight: "bold",
+      width: "20%",
+      border: "1px solid #000",
+      padding: "3px 7px",
+      height: "auto",
+      minHeight: "23px",
+      whiteSpace: "normal",
+    },
+    valueCell: {
+      border: "1px solid #000",
+      padding: "3px 7px",
+      height: "auto",
+      minHeight: "23px",
+      fontSize: "12px",
+      wordBreak: "break-word",
+      overflowWrap: "break-word",
+      wordWrap: "break-word",
+      whiteSpace: "normal",
+      overflow: "visible",
+    },
+    photoCell: {
+      width: "38mm",
+      textAlign: "center",
+      verticalAlign: "middle",
+      border: "1px solid #000",
+      padding: "5px 7px",
+    },
+    photoBox: {
+      width: "35mm",
+      height: "45mm",
+      border: "1px solid #000",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      textAlign: "center",
+      fontSize: "10px",
+      fontWeight: "bold",
+      margin: "auto",
+      overflow: "hidden",
+    },
+    photoImg: {
+      width: "100%",
+      height: "100%",
+      objectFit: "cover",
+    },
+    signatureSection: { marginTop: "3px" },
+    signatureTable: { width: "100%", borderCollapse: "collapse" },
+    signatureTd: {
+      border: "1px solid #000",
+      height: "80px",
+      verticalAlign: "bottom",
+      textAlign: "center",
+      fontSize: "11px",
+      paddingBottom: "5px",
+    },
+    rulesPage: { padding: "12mm" },
+    formCodeTop: {
+      textAlign: "right",
+      fontWeight: "bold",
+      fontSize: "12px",
+      marginBottom: "4px",
+    },
+    rulesTitle: {
+      textAlign: "center",
+      fontSize: "16px",
+      fontWeight: "bold",
+      textDecoration: "underline",
+      marginBottom: "8px",
+    },
+    subHeading: {
+      fontSize: "14px",
+      fontWeight: "bold",
+      marginTop: "6px",
+      marginBottom: "4px",
+    },
+    rulesList: {
+      fontSize: "11.5px",
+      lineHeight: 1.2,
+      paddingLeft: 0,
+      margin: 0,
+    },
+    rulesLi: {
+      marginBottom: "3px",
+      textAlign: "justify",
+      paddingLeft: "4px",
+    },
+    additionalHeading: {
+      fontWeight: "bold",
+      textDecoration: "underline",
+      marginTop: "8px",
+      marginBottom: "4px",
+      fontSize: "13px",
+    },
+    noteText: { marginTop: "8px", fontSize: "12px", fontWeight: "bold" },
+    undertakingTitle: {
+      textAlign: "center",
+      fontWeight: "bold",
+      textDecoration: "underline",
+      fontSize: "14px",
+      marginTop: "8px",
+      marginBottom: "4px",
+    },
+    declarationTitle: {
+      textAlign: "center",
+      fontWeight: "bold",
+      textDecoration: "underline",
+      fontSize: "14px",
+      marginTop: "8px",
+      marginBottom: "4px",
+    },
+    undertakingText: { fontSize: "12px", lineHeight: 1.25, textAlign: "justify" },
+    declarationText: { fontSize: "12px", lineHeight: 1.25, textAlign: "justify" },
+    signLine: {
+      textAlign: "right",
+      fontSize: "12px",
+      marginTop: "25px",
+      fontWeight: "bold",
+    },
+    dotted: {
+      borderBottom: "1px dotted #000",
+      display: "inline-block",
+      minWidth: "160px",
+    },
+};
+
+// ── Row helper — declared outside the component to satisfy the React
+//    Compiler's static-components rule ─────────────────────────────
+function Row({ label, value }) {
+  return (
+    <tr>
+      <td style={styles.label}>{label}</td>
+      <td style={styles.valueCell}>{value}</td>
+    </tr>
+  );
+}
 
 export default function HostelApplicationForm({ data = {}, onBack }) {
   const {
@@ -29,192 +225,6 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
     food            = "",
   } = data;
 
-  const styles = {
-    body: {
-      margin: 0,
-      padding: "20px",
-      background: "#eeeeee",
-      fontFamily: "Arial, Helvetica, sans-serif",
-      color: "#111",
-    },
-    a4Page: {
-      width: "210mm",
-      height: "297mm",
-      margin: "0 auto 25px auto",
-      background: "white",
-      padding: "10mm",
-      position: "relative",
-      overflow: "hidden",
-      pageBreakAfter: "always",
-    },
-    collegeHeader: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      borderBottom: "2px solid #000",
-      paddingBottom: "6px",
-    },
-    logo: {
-      width: "65px",
-      height: "65px",
-      objectFit: "contain",
-      marginRight: "12px",
-    },
-    collegeName: { textAlign: "center" },
-    collegeH1: { fontSize: "19px", margin: 0, fontWeight: "bold" },
-    collegeH2: { fontSize: "17px", margin: "6px 0 0" },
-    collegeP:  { fontSize: "11px", margin: "3px 0" },
-    formCode: {
-      textAlign: "right",
-      fontWeight: "bold",
-      fontSize: "11px",
-      marginTop: "3px",
-    },
-    applicationInfo: {
-      display: "flex",
-      justifyContent: "space-between",
-      border: "1px solid #000",
-      padding: "6px 8px",
-      fontSize: "12px",
-      marginBottom: "7px",
-    },
-    sectionTitle: {
-      background: "#eeeeee",
-      border: "1px solid #000",
-      padding: "4px 6px",
-      fontWeight: "bold",
-      fontSize: "12px",
-    },
-    formTable: {
-      width: "100%",
-      borderCollapse: "collapse",
-      fontSize: "12px",
-    },
-    label: {
-      fontWeight: "bold",
-      width: "27%",
-      border: "1px solid #000",
-      padding: "5px 7px",
-      height: "27px",
-    },
-    valueCell: {
-      border: "1px solid #000",
-      padding: "5px 7px",
-      height: "27px",
-      fontSize: "12px",
-    },
-    photoCell: {
-      width: "38mm",
-      textAlign: "center",
-      verticalAlign: "middle",
-      border: "1px solid #000",
-      padding: "5px 7px",
-    },
-    photoBox: {
-      width: "35mm",
-      height: "45mm",
-      border: "1px solid #000",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      textAlign: "center",
-      fontSize: "10px",
-      fontWeight: "bold",
-      margin: "auto",
-      overflow: "hidden",
-    },
-    photoImg: {
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
-    },
-    signatureSection: { marginTop: "12px" },
-    signatureTable: { width: "100%", borderCollapse: "collapse" },
-    signatureTd: {
-      border: "1px solid #000",
-      height: "55px",
-      verticalAlign: "bottom",
-      textAlign: "center",
-      fontSize: "11px",
-      paddingBottom: "6px",
-    },
-    rulesPage: { padding: "12mm" },
-    formCodeTop: {
-      textAlign: "right",
-      fontWeight: "bold",
-      fontSize: "12px",
-      marginBottom: "4px",
-    },
-    rulesTitle: {
-      textAlign: "center",
-      fontSize: "16px",
-      fontWeight: "bold",
-      textDecoration: "underline",
-      marginBottom: "12px",
-    },
-    subHeading: {
-      fontSize: "14px",
-      fontWeight: "bold",
-      marginTop: "12px",
-      marginBottom: "7px",
-    },
-    rulesList: {
-      fontSize: "11.5px",
-      lineHeight: 1.35,
-      paddingLeft: 0,
-      margin: 0,
-    },
-    rulesLi: {
-      marginBottom: "7px",
-      textAlign: "justify",
-      paddingLeft: "4px",
-    },
-    additionalHeading: {
-      fontWeight: "bold",
-      textDecoration: "underline",
-      marginTop: "15px",
-      marginBottom: "7px",
-      fontSize: "13px",
-    },
-    noteText: { marginTop: "17px", fontSize: "12px", fontWeight: "bold" },
-    undertakingTitle: {
-      textAlign: "center",
-      fontWeight: "bold",
-      textDecoration: "underline",
-      fontSize: "14px",
-      marginTop: "19px",
-      marginBottom: "9px",
-    },
-    declarationTitle: {
-      textAlign: "center",
-      fontWeight: "bold",
-      textDecoration: "underline",
-      fontSize: "14px",
-      marginTop: "19px",
-      marginBottom: "9px",
-    },
-    undertakingText: { fontSize: "12px", lineHeight: 1.5, textAlign: "justify" },
-    declarationText: { fontSize: "12px", lineHeight: 1.5, textAlign: "justify" },
-    signLine: {
-      textAlign: "right",
-      fontSize: "12px",
-      marginTop: "32px",
-      fontWeight: "bold",
-    },
-    dotted: {
-      borderBottom: "1px dotted #000",
-      display: "inline-block",
-      minWidth: "160px",
-    },
-  };
-
-  const Row = ({ label, value }) => (
-    <tr>
-      <td style={styles.label}>{label}</td>
-      <td style={styles.valueCell}>{value}</td>
-    </tr>
-  );
-
   return (
     <div style={styles.body}>
       <style>{`
@@ -222,30 +232,66 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
           .no-print {
             display: none !important;
           }
-          body {
-            margin: 0;
-            padding: 0;
-            background: white;
+          * {
+            margin: 0 !important;
+            padding: 0 !important;
           }
-          .a4-page {
-            page-break-after: always;
-            margin: 0;
-            padding: 15mm;
+          html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            background: white !important;
+            font-size: 12px;
+            height: auto;
+          }
+          @page {
+            size: A4;
+            margin: 6mm;
+          }
+          .print-page-break {
+            page-break-before: always;
+          }
+          /* Ensure proper page layout with margins */
+          .haf-print-page {
+            padding: 5mm !important;
+            margin: 0 !important;
+            width: 210mm !important;
+            height: 297mm !important;
+            box-sizing: border-box !important;
+            page-break-after: auto;
+            page-break-inside: avoid;
+            overflow: hidden;
+          }
+          /* Ensure content stays within page bounds */
+          table {
+            width: 100% !important;
+            table-layout: fixed;
+            page-break-inside: avoid;
+          }
+          td {
+            box-sizing: border-box !important;
+            page-break-inside: avoid;
+          }
+          ol {
+            margin: 0 !important;
+            padding-left: 18px !important;
+            page-break-inside: avoid;
+          }
+          li {
+            margin-bottom: 2px !important;
+            page-break-inside: avoid;
           }
         }
       `}</style>
 
       {/* ── PAGE 1 – Application Form ── */}
-      <div style={styles.a4Page}>
+      <div style={styles.a4Page} className="haf-print-page">
         <div style={styles.collegeHeader}>
-          <img src={svceLogo} style={styles.logo} alt="SVCE Logo" />
-          <div style={styles.collegeName}>
-            <h1 style={styles.collegeH1}>SRI VENKATESHWARA COLLEGE OF ENGINEERING</h1>
-            <p style={styles.collegeP}>BENGALURU</p>
+          <div style={{ textAlign: "center" }}>
+            <img src={svceLogo} style={styles.logo} alt="SVCE Logo" />
             <h2 style={styles.collegeH2}>HOSTEL APPLICATION FORM</h2>
           </div>
         </div>
-
+      
         <div style={styles.formCode}>HOS01</div>
 
         <div style={styles.applicationInfo}>
@@ -278,7 +324,7 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
               <td style={styles.valueCell}>{studentEmail}</td>
             </tr>
             <tr>
-              <td style={styles.label}>Sex</td>
+              <td style={styles.label}>Gender</td>
               <td style={styles.valueCell}>{sex}</td>
             </tr>
             <tr>
@@ -307,14 +353,22 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
           </tbody>
         </table>
 
-        <div style={styles.sectionTitle}>PARENT / MOTHER DETAILS</div>
+        <div style={styles.sectionTitle}>GAURDIAN/ FATHER/ MOTHER DETAILS</div>
 
         <table style={styles.formTable}>
           <tbody>
-            <Row label="Parent / Mother Name" value={parentName}       />
-            <Row label="Occupation"           value={parentOccupation} />
-            <Row label="Phone Number"         value={parentPhone}      />
-            <Row label="Address"              value={parentAddress}    />
+            <tr>
+              <td style={styles.label}>Gaurdian/ Father/ Mother Name</td>
+              <td style={styles.valueCell}>{parentName}</td>
+              <td style={styles.label}>Occupation</td>
+              <td style={{...styles.valueCell, wordBreak: 'break-word', whiteSpace: 'normal'}}>{parentOccupation}</td>
+            </tr>
+            <tr>
+              <td style={styles.label}>Phone Number</td>
+              <td style={styles.valueCell}>{parentPhone}</td>
+              <td style={{...styles.label, verticalAlign: 'top'}}>Address</td>
+              <td style={{...styles.valueCell, verticalAlign: 'top', height: 'auto', minHeight: '54px', wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal'}}>{parentAddress}</td>
+            </tr>
           </tbody>
         </table>
 
@@ -322,10 +376,18 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
 
         <table style={styles.formTable}>
           <tbody>
-            <Row label="Guardian Name"       value={guardianName}       />
-            <Row label="Guardian Occupation" value={guardianOccupation} />
-            <Row label="Guardian Phone"      value={guardianPhone}      />
-            <Row label="Guardian Address"    value={guardianAddress}    />
+            <tr>
+              <td style={styles.label}>Guardian Name</td>
+              <td style={styles.valueCell}>{guardianName}</td>
+              <td style={styles.label}>Guardian Occupation</td>
+              <td style={{...styles.valueCell, wordBreak: 'break-word', whiteSpace: 'normal'}}>{guardianOccupation}</td>
+            </tr>
+            <tr>
+              <td style={styles.label}>Guardian Phone</td>
+              <td style={styles.valueCell}>{guardianPhone}</td>
+              <td style={{...styles.label, verticalAlign: 'top'}}>Guardian Address</td>
+              <td style={{...styles.valueCell, verticalAlign: 'top', height: 'auto', minHeight: '54px', wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'normal'}}>{guardianAddress}</td>
+            </tr>
           </tbody>
         </table>
 
@@ -353,7 +415,7 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
       </div>
 
       {/* ── PAGE 2 – Rules & Regulations (part 1) ── */}
-      <div style={{ ...styles.a4Page, ...styles.rulesPage }}>
+      <div style={{ ...styles.a4Page, ...styles.rulesPage }} className="print-page-break haf-print-page">
         <div style={styles.formCodeTop}>HOS01</div>
 
         <div style={styles.rulesTitle}>Rules and Regulations of Hostel</div>
@@ -398,7 +460,7 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
       </div>
 
       {/* ── PAGE 3 – Rules & Regulations (part 2) ── */}
-      <div style={{ ...styles.a4Page, ...styles.rulesPage }}>
+      <div style={{ ...styles.a4Page, ...styles.rulesPage }} className="print-page-break haf-print-page">
         <div style={styles.formCodeTop}>HOS01</div>
 
         <ol style={styles.rulesList} start={15}>
@@ -428,7 +490,7 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
       </div>
 
       {/* ── PAGE 4 – Additional Rules, Undertaking & Declaration ── */}
-      <div style={{ ...styles.a4Page, ...styles.rulesPage }}>
+      <div style={{ ...styles.a4Page, ...styles.rulesPage }} className="print-page-break haf-print-page">
         <div style={styles.formCodeTop}>HOS01</div>
 
         <div style={styles.additionalHeading}>Additional Rules for Girls' Hostel:</div>
@@ -466,7 +528,7 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
           <br /><br />
           In case I am fined for violating the rules/guidelines as a warning and if I do not pay the fine with in the stipulated period, I may be sent out within 24 hours notice on Indisciplinary measure and that I will forfeit the entire amount paid to the hostel including the caution deposit if any.
         </div>
-
+          <br />
         <div style={styles.signLine}>Signature of the student</div>
 
         <div style={styles.declarationTitle}>DECLARATION BY PARENT</div>
@@ -482,7 +544,7 @@ export default function HostelApplicationForm({ data = {}, onBack }) {
           <span style={styles.dotted}>{guardianName || "\u00a0"}</span>
           {" "}will be local Guardian whose address and phone numbers are furnished in the application form.
         </div>
-
+          <br />
         <div style={styles.signLine}>Signature of the Parent/Local Guardian</div>
       </div>
 
